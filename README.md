@@ -5,5 +5,5 @@
 ### -- backend: Spring Boot REST
 ### -- frontend: Angular
 
-### SWOT
+#SWOT
 ![Screenshot](SWOT/swot_pic.png)
