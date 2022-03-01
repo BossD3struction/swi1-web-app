@@ -1,0 +1,10 @@
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (1, 'Action');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (2, 'Adventure');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (3, 'Horror');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (4, 'Drama');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (5, 'Romance');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (6, 'Thriller');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (7, 'Comedy');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (8, 'Mystery');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (15, 'Sci-Fi');
+INSERT INTO web_app.genre (pk_genre_id, name) VALUES (18, 'Fantasy');

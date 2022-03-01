@@ -1,0 +1,25 @@
+<div class="mt-3 mb-3 card" *ngFor="let movie of movies">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{{movie.bannerLink}}" class="card-img" alt="..."/>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{movie.name}}
+          <a style="float:right" [routerLink]="['/movie',movie.id,'reviews']" class="btn btn-primary">Reviews</a>
+        </h5>
+        <p class="card-text">{{movie.year}}, {{movie.runningTime}} min</p>
+        <p class="card-text">
+          <span *ngFor="let genre of movie.genres">
+          <span class="pr-2">|{{genre.name}}|</span>
+        </span>
+        </p>
+        <p class="card-text">{{movie.about}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="movies.length == 0" class="mt-3 alert alert-danger" role="alert">
+  We don't have any movies here, yet!
+</div>
