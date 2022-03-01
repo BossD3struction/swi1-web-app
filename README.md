@@ -4,3 +4,6 @@
 ### -- Adminové mohou přidat do systému nový film
 ### -- backend: Spring Boot REST
 ### -- frontend: Angular
+
+### SWOT
+![can't find picture](https://github.com/BossD3struction/swi1-web-app/tree/master/SWOT/swot_pic.png?raw=true)
