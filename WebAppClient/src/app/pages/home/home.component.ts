@@ -21,13 +21,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.token.getUser();
-    this.userService.listUsers().subscribe(
-      data => {
-        this.users = data;
-      }, err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    );
+    if (this.currentUser != null && this.currentUser.roles == 'ROLE_ADMIN') {
+      this.userService.listUsers().subscribe(
+        data => {
+          this.users = data;
+        }, err => {
+          this.content = JSON.parse(err.error).message;
+        }
+      );
+  }
   }
 
 }

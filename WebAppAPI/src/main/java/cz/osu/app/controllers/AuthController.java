@@ -42,6 +42,21 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+        String username = loginRequest.getUsername();
+        if (!userRepository.existsByUsername(username)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User '" + username + "' doesn't exist!"));
+        }
+
+        boolean isPasswordCorrect =
+                passwordEncoder.matches(loginRequest.getPassword(), userRepository.findByUsername(loginRequest.getUsername()).getPassword());
+        if (!isPasswordCorrect) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Incorrect password!"));
+        }
+
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
