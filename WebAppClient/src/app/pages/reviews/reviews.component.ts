@@ -14,6 +14,7 @@ export class ReviewsComponent implements OnInit {
   content: string;
   id: any;
   reviews: Review[] = [];
+  timeoutInMillis: number = 1000 * 10;    // 10 sec
 
   constructor(private movieService: MovieService, private route: ActivatedRoute) {
   }
@@ -27,6 +28,7 @@ export class ReviewsComponent implements OnInit {
         this.content = JSON.parse(err.error).message;
       }
     );
+    setTimeout(() => { this.ngOnInit() }, this.timeoutInMillis);
   }
 
 }

@@ -1,13 +1,13 @@
 package cz.osu.app.controllers;
 
+import cz.osu.app.extensions.UserDetailsImpl;
 import cz.osu.app.models.entities.User;
+import cz.osu.app.repositories.UserRepository;
 import cz.osu.app.requests.LoginRequest;
 import cz.osu.app.requests.RegisterRequest;
 import cz.osu.app.responses.JwtResponse;
 import cz.osu.app.responses.MessageResponse;
-import cz.osu.app.repositories.UserRepository;
 import cz.osu.app.security.JwtUtility;
-import cz.osu.app.extensions.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -80,13 +80,13 @@ public class AuthController {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: Username '" + registerRequest.getUsername() + "' is already taken!"));
         }
 
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse("Error: Email '" + registerRequest.getEmail() + "' is already in use!"));
         }
 
         User user = new User(
@@ -95,6 +95,6 @@ public class AuthController {
                 passwordEncoder.encode(registerRequest.getPassword()), false);
 
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("User was registered successfully!"));
     }
 }

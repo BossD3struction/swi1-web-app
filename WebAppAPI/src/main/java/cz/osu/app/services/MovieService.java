@@ -45,13 +45,6 @@ public class MovieService {
     }
 
 
-    public Movie getMovie(long movieId) {
-        return findAllMovies().stream()
-                .filter((q) -> q.getId() == movieId)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown movie id " + movieId));
-    }
-
     public Genre getGenre(long genreId) {
         return findAllGenres().stream()
                 .filter((q) -> q.getId() == genreId)

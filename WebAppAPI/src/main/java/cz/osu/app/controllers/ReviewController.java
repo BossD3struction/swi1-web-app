@@ -30,35 +30,36 @@ public class ReviewController {
 
     @PostMapping("/create")
     @Secured(value = {"ROLE_USER", "ROLE_ADMIN"})
-    public void createReview(@RequestBody Review review) {
+    public ResponseEntity<?> createReview(@RequestBody Review review) {
         service.save(review);
+        return ResponseEntity.ok(new MessageResponse("Review was successfully created!"));
     }
 
     @PostMapping("/create/angular")
     @Secured(value = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<?> createReviewAngular(@Valid @RequestBody AddReviewRequest addReviewRequest) {
-
         User user = service.getUser(addReviewRequest.getUserId());
         Movie movie = service.getMovie(addReviewRequest.getMovieId());
         Review review = new Review(user, movie, addReviewRequest.getText());
         service.save(review);
-
-        return ResponseEntity.ok(new MessageResponse("Review was saved successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Review was successfully saved!"));
     }
 
     @PutMapping("/{reviewId}/update")
     @Secured(value = {"ROLE_ADMIN"})
-    public void updateReview(@RequestBody Review review, @PathVariable("reviewId") long reviewId) {
+    public ResponseEntity<?> updateReview(@RequestBody Review review, @PathVariable("reviewId") long reviewId) {
         Review reviewFromDb = service.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("Review not found for this id :: " + reviewId));
         Objects.requireNonNull(reviewFromDb).setUser(review.getUser());
         Objects.requireNonNull(reviewFromDb).setMovie(review.getMovie());
         Objects.requireNonNull(reviewFromDb).setText(review.getText());
         service.save(reviewFromDb);
+        return ResponseEntity.ok(new MessageResponse("Review was successfully updated!"));
     }
 
     @DeleteMapping("/{reviewId}/delete")
     @Secured(value = {"ROLE_ADMIN"})
-    public void deleteReview(@PathVariable("reviewId") long reviewId) {
+    public ResponseEntity<?> deleteReview(@PathVariable("reviewId") long reviewId) {
         service.deleteById(reviewId);
+        return ResponseEntity.ok(new MessageResponse("Review was successfully deleted!"));
     }
 }

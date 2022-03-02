@@ -31,8 +31,9 @@ public class MovieController {
 
     @PostMapping("/create")
     @Secured(value = {"ROLE_ADMIN"})
-    public void createMovie(@RequestBody Movie movie) {
+    public ResponseEntity<?> createMovie(@RequestBody Movie movie) {
         service.save(movie);
+        return ResponseEntity.ok(new MessageResponse("Movie was successfully created!"));
     }
 
     @PostMapping("/create/angular")
@@ -61,14 +62,14 @@ public class MovieController {
 
                 service.save(movie);
             }
-            return ResponseEntity.ok(new MessageResponse("Movie was saved successfully!"));
+            return ResponseEntity.ok(new MessageResponse("Movie was successfully saved!"));
 
         }
     }
 
     @PutMapping("/{movieId}/update")
     @Secured(value = {"ROLE_ADMIN"})
-    public void updateMovie(@RequestBody Movie movie, @PathVariable("movieId") long movieId) {
+    public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable("movieId") long movieId) {
         Movie movieFromDb = service.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + movieId));
         Objects.requireNonNull(movieFromDb).setName(movie.getName());
         Objects.requireNonNull(movieFromDb).setYear(movie.getYear());
@@ -77,12 +78,14 @@ public class MovieController {
         Objects.requireNonNull(movieFromDb).setAbout(movie.getAbout());
         Objects.requireNonNull(movieFromDb).setGenres(movie.getGenres());
         service.save(movieFromDb);
+        return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
     }
 
     @DeleteMapping("/{movieId}/delete")
     @Secured(value = {"ROLE_ADMIN"})
-    public void deleteMovie(@PathVariable("movieId") long movieId) {
+    public ResponseEntity<?> deleteMovie(@PathVariable("movieId") long movieId) {
         service.deleteById(movieId);
+        return ResponseEntity.ok(new MessageResponse("Movie was successfully deleted!"));
     }
 
     @GetMapping("/{movieId}/reviews")
