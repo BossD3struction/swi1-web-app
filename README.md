@@ -7,3 +7,6 @@
 
 ## SWOT
 ![Screenshot](SWOT/swot_pic.png)
+
+## Database scheme
+![Screenshot](SQL/scheme.png)
