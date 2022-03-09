@@ -33,7 +33,6 @@ class MovieServiceTest {
         String movieName = "MovieIsInDatabase";
         when(movieRepository.existsByName(anyString())).thenReturn(true);
         Boolean result = movieService.movieExistsByName(movieName);
-        //Boolean result = movieRepository.existsByName(movieName);
         assertTrue(result, "Movie exists in db");
     }
 
@@ -43,7 +42,6 @@ class MovieServiceTest {
         String movieName = "MovieIsNotInDatabase";
         when(movieRepository.existsByName(anyString())).thenReturn(false);
         Boolean result = movieService.movieExistsByName(movieName);
-        //Boolean result = movieRepository.existsByName(movieName);
         assertFalse(result, "Movie doesn't exist in db");
     }
 }
