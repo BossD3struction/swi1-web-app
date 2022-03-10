@@ -14,7 +14,7 @@ export class ReviewsComponent implements OnInit {
   content: string;
   id: any;
   reviews: Review[] = [];
-  timeoutInMillis: number = 1000 * 10;    // 10 sec
+  timeoutInMillis: number = 86400000;    // 24 hours
 
   constructor(private movieService: MovieService, private route: ActivatedRoute) {
   }
