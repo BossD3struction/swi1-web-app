@@ -6,8 +6,7 @@ import cz.osu.app.repositories.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,18 +29,16 @@ class MovieServiceTest {
     @Test
     void movieExistsByNameTrue() {
 
-        String movieName = "MovieIsInDatabase";
         when(movieRepository.existsByName(anyString())).thenReturn(true);
-        Boolean result = movieService.movieExistsByName(movieName);
+        Boolean result = movieService.movieExistsByName(anyString());
         assertTrue(result, "Movie exists in db");
     }
 
     @Test
     void movieExistByNameFalse() {
 
-        String movieName = "MovieIsNotInDatabase";
         when(movieRepository.existsByName(anyString())).thenReturn(false);
-        Boolean result = movieService.movieExistsByName(movieName);
+        Boolean result = movieService.movieExistsByName(anyString());
         assertFalse(result, "Movie doesn't exist in db");
     }
 }
