@@ -29,16 +29,18 @@ class MovieServiceTest {
     @Test
     void movieExistsByNameTrue() {
 
-        when(movieRepository.existsByName(anyString())).thenReturn(true);
-        Boolean result = movieService.movieExistsByName(anyString());
-        assertTrue(result, "Movie exists in db");
+        String movieName = "Dune";
+        when(movieRepository.existsByName(movieName)).thenReturn(true);
+        Boolean result = movieService.movieExistsByName(movieName);
+        assertTrue(result, "Movie already exists in database!");
     }
 
     @Test
     void movieExistByNameFalse() {
 
-        when(movieRepository.existsByName(anyString())).thenReturn(false);
-        Boolean result = movieService.movieExistsByName(anyString());
-        assertFalse(result, "Movie doesn't exist in db");
+        String movieName = "Dune";
+        when(movieRepository.existsByName(movieName)).thenReturn(false);
+        Boolean result = movieService.movieExistsByName(movieName);
+        assertFalse(result, "Movie doesn't exist in database, yet!");
     }
 }
