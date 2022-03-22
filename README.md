@@ -35,3 +35,6 @@
 
 ## Design Sequence Diagram:
 ![design_sequence_diagram](diagrams/sequence_diagrams/design.png)
+
+## EPC Diagram:
+![epc_diagram](diagrams/event_driven_process_chain/epc_diagram.png)
