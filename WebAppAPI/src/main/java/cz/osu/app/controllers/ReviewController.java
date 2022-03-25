@@ -18,7 +18,7 @@ import java.util.Objects;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/review")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin()
 public class ReviewController {
 
     private final ReviewService service;

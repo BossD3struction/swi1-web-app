@@ -14,7 +14,7 @@ import java.util.Objects;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/genre")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin()
 public class GenreController {
 
     private final GenreService service;
