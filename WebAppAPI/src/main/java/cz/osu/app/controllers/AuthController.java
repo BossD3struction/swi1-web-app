@@ -9,6 +9,7 @@ import cz.osu.app.responses.JwtResponse;
 import cz.osu.app.responses.MessageResponse;
 import cz.osu.app.security.JwtUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,7 +46,7 @@ public class AuthController {
         String username = loginRequest.getUsername();
         if (!userRepository.existsByUsername(username)) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.NOT_FOUND)
                     .body(new MessageResponse("Error: User '" + username + "' doesn't exist!"));
         }
 
@@ -53,7 +54,7 @@ public class AuthController {
                 passwordEncoder.matches(loginRequest.getPassword(), userRepository.findByUsername(loginRequest.getUsername()).getPassword());
         if (!isPasswordCorrect) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: Incorrect password!"));
         }
 
@@ -79,13 +80,13 @@ public class AuthController {
 
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.NOT_FOUND)
                     .body(new MessageResponse("Error: Username '" + registerRequest.getUsername() + "' is already taken!"));
         }
 
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: Email '" + registerRequest.getEmail() + "' is already in use!"));
         }
 
