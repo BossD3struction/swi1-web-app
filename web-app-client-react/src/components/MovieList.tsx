@@ -1,16 +1,15 @@
-import {useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import axios from 'axios';
 
-const MovieList = () => {
+export const MovieList: FC = () => {
 
     const url = "http://localhost:8080/movie/list";
     const [movies, setMovies] = useState<any>([]);
 
     useEffect(() => {
-        axios.get(url)
-            .then(response => {
-                setMovies(response.data)
-            })
+        axios.get(url).then(response => {
+            setMovies(response.data)
+        })
     }, [url])
 
     return (
@@ -39,9 +38,13 @@ const MovieList = () => {
                                 <td>{movie.runningTime}</td>
                                 <td>{movie.bannerLink}</td>
                                 <td>{movie.about}</td>
-                                {movie.genres.map((genre: any) => (
-                                    <td key={genre.id}>{genre.name}</td>
-                                ))}
+                                <td>
+                                    <ul>
+                                        {movie.genres.map((genre: any) => (
+                                            <li key={movie.id + genre.id}>{genre.name}</li>
+                                        ))}
+                                    </ul>
+                                </td>
                             </tr>
                         ))}
                         </tbody>
@@ -49,7 +52,5 @@ const MovieList = () => {
                 </div>
             </div>
         </>
-    );
-};
-
-export default MovieList;
+    )
+}
