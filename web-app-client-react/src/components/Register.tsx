@@ -58,8 +58,8 @@ export const Register: FC = () => {
             <div className="row justify-content-center mb-4">
                 <TextField InputLabelProps={{required: false}}
                            required
-                           error={username.length < 3 && username.length != 0}
-                           helperText={username.length < 3 && username.length != 0 ? "Username must be at least 3 characters long." : ''}
+                           error={username.length < 3 && username.length !== 0}
+                           helperText={username.length < 3 && username.length !== 0 ? "Username must be at least 3 characters long." : ''}
                            id="username-input"
                            label="Username"
                            variant="outlined"
@@ -85,8 +85,8 @@ export const Register: FC = () => {
             <div className="row justify-content-center mb-4">
                 <TextField InputLabelProps={{required: false}}
                            required
-                           error={password.length < 6 && password.length != 0}
-                           helperText={password.length < 6 && password.length != 0 ? "Password must be at least 6 characters long." : ''}
+                           error={password.length < 6 && password.length !== 0}
+                           helperText={password.length < 6 && password.length !== 0 ? "Password must be at least 6 characters long." : ''}
                            id="password-input"
                            label="Password"
                            variant="outlined"
