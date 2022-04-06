@@ -31,9 +31,6 @@ export const Register: FC = () => {
                 confirmButtonText: 'Close'
             });
         } catch (err: any) {
-            if (err.status === 400) {
-                console.log(err);
-            }
             if (err.status === 404) {
                 await Swal.fire({
                     titleText: 'Username \'' + username + '\' is already taken!',
