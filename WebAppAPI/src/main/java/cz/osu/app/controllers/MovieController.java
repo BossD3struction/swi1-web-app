@@ -93,4 +93,9 @@ public class MovieController {
         Movie movie = service.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + movieId));
         return service.findByMovie(movie);
     }
+
+    @GetMapping("/{movieId}")
+    public Movie getMovie(@PathVariable("movieId") long movieId) {
+        return service.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + movieId));
+    }
 }

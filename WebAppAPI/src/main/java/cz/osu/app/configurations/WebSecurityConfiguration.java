@@ -53,6 +53,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/movie/list").permitAll()
                 .antMatchers("/review/list").permitAll()
                 .antMatchers("/movie/{reviewId}/reviews").permitAll()
+                .antMatchers("/movie/{movieId}").permitAll()
                 .antMatchers("/images/**").permitAll();
 
         http.csrf().disable().authorizeRequests()
