@@ -1,17 +1,28 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {AuthService} from "../services/AuthService";
 import Swal from "sweetalert2";
 import TextField from "@mui/material/TextField";
 import RegisterRequest from "../models/request/RegisterRequest";
 import RegisterResponse from "../models/response/RegisterResponse";
+import {useNavigate} from "react-router-dom";
+import {TokenStorageService} from "../services/TokenStorageService";
 
 export const Register: FC = () => {
+
+    let authService = new AuthService();
+    let tokenStorageService = new TokenStorageService();
+    const isUserLoggedIn = tokenStorageService.getToken();
 
     const [username, setUsername] = useState<any>([]);
     const [email, setEmail] = useState<any>([]);
     const [password, setPassword] = useState<any>([]);
+    const navigate = useNavigate();
 
-    let authService = new AuthService();
+    useEffect(() => {
+        if (isUserLoggedIn !== null) {
+            navigate('/home');
+        }
+    }, [isUserLoggedIn, navigate]);
 
     async function registerRequest(e: any) {
 
@@ -30,6 +41,7 @@ export const Register: FC = () => {
                 icon: 'success',
                 confirmButtonText: 'Close'
             });
+            navigate('/login');
         } catch (err: any) {
             if (err.status === 404) {
                 await Swal.fire({

@@ -1,18 +1,27 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import TextField from "@mui/material/TextField";
 import {AuthService} from "../services/AuthService";
 import LoginRequest from "../models/request/LoginRequest";
 import LoginResponse from "../models/response/LoginResponse";
 import {TokenStorageService} from "../services/TokenStorageService";
 import Swal from 'sweetalert2';
+import {useNavigate} from "react-router-dom";
 
 export const Login: FC = () => {
 
-    const [username, setUsername] = useState<any>([]);
-    const [password, setPassword] = useState<any>([]);
-
     let authService = new AuthService();
     let tokenStorageService = new TokenStorageService();
+    const isUserLoggedIn = tokenStorageService.getToken();
+
+    const [username, setUsername] = useState<any>([]);
+    const [password, setPassword] = useState<any>([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isUserLoggedIn !== null) {
+            navigate('/home');
+        }
+    }, [isUserLoggedIn, navigate]);
 
     async function loginRequest(e: any) {
 
@@ -31,6 +40,8 @@ export const Login: FC = () => {
                 icon: 'success',
                 confirmButtonText: 'Close'
             });
+            navigate('/home');
+            window.location.reload();
         } catch (err: any) {
             if (err.status === 404) {
                 await Swal.fire({

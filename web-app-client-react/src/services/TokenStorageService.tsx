@@ -29,4 +29,8 @@ export class TokenStorageService {
     public getUser(): string {
         return JSON.parse(sessionStorage.getItem(USER_KEY) || '');
     }
+
+    public getUserOptimized(): LoginResponse {
+        return JSON.parse(sessionStorage.getItem(USER_KEY) || '');
+    }
 }
