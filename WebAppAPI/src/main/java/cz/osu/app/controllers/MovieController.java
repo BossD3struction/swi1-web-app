@@ -5,6 +5,7 @@ import cz.osu.app.models.entities.Movie;
 import cz.osu.app.models.entities.Review;
 import cz.osu.app.requests.AddMovieRequest;
 import cz.osu.app.responses.MessageResponse;
+import cz.osu.app.responses.MovieResponse;
 import cz.osu.app.services.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,7 +97,21 @@ public class MovieController {
     }
 
     @GetMapping("/{movieId}")
-    public Movie getMovie(@PathVariable("movieId") long movieId) {
-        return service.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + movieId));
+    public MovieResponse getMovie(@PathVariable("movieId") long movieId) {
+        Movie movie = service.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + movieId));
+        List<Genre> genres = new ArrayList<>(movie.getGenres());
+        Collection<Long> genreIds = new ArrayList<>();
+        for (Genre genre : genres) {
+            genreIds.add(genre.getId());
+        }
+        return new MovieResponse(
+                movie.getId(),
+                movie.getName(),
+                movie.getYear(),
+                movie.getRunningTime(),
+                movie.getBannerLink(),
+                movie.getAbout(),
+                genreIds
+        );
     }
 }
