@@ -27,6 +27,7 @@ function App() {
                     <NavigationBar/>
                     <Container>
                         <Routes>
+                            <Route path="/" element={<Home/>}/>
                             <Route path="/home" element={<Home/>}/>
                             <Route path="/models" element={<Models/>}/>
                             <Route path="/movies" element={<Movies/>}/>

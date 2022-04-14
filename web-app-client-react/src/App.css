@@ -2,3 +2,7 @@ footer {
     background: #333;
     color: #aaa;
 }
+
+.modal-50w {
+    min-width: 50%;
+}

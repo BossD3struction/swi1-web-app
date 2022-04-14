@@ -6,6 +6,9 @@ import LoginResponse from "../models/response/LoginResponse";
 import {TokenStorageService} from "../services/TokenStorageService";
 import Swal from 'sweetalert2';
 import {useNavigate} from "react-router-dom";
+import {Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export const Login: FC = () => {
 
@@ -15,7 +18,16 @@ export const Login: FC = () => {
 
     const [username, setUsername] = useState<any>([]);
     const [password, setPassword] = useState<any>([]);
+    const [showPassword, setShowPassword] = useState<any>(false);
     const navigate = useNavigate();
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
 
     useEffect(() => {
         if (isUserLoggedIn !== null) {
@@ -64,19 +76,46 @@ export const Login: FC = () => {
     return (
         <form onSubmit={loginRequest}>
             <div className="row justify-content-center mb-4">
-                <TextField InputLabelProps={{required: false}}
-                           required
-                           id="username-input"
-                           label="Username"
-                           variant="outlined"
-                           type="text"
-                           onChange={(event) => {
-                               setUsername(event.target.value);
-                           }}
-                />
+                <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
+                    <TextField InputLabelProps={{required: false}}
+                               required
+                               id="username-input"
+                               label="Username"
+                               variant="outlined"
+                               type="text"
+                               onChange={(event) => {
+                                   setUsername(event.target.value);
+                               }}
+                    />
+                </FormControl>
             </div>
             <div className="row justify-content-center mb-4">
-                <TextField InputLabelProps={{required: false}}
+                <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
+                    <InputLabel htmlFor="password-input">Password</InputLabel>
+                    <OutlinedInput
+                        required
+                        id="password-input"
+                        label="Password"
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={(event) => {
+                            setPassword(event.target.value);
+                        }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    tabIndex={-1}
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
+                {/*<TextField InputLabelProps={{required: false}}
                            required
                            id="password-input"
                            label="Password"
@@ -85,12 +124,17 @@ export const Login: FC = () => {
                            onChange={(event) => {
                                setPassword(event.target.value);
                            }}
-                />
+                />*/}
             </div>
             <div className="row justify-content-center">
-                <button type="submit" className="btn btn-lg btn-primary w-50">
+                <FormControl sx={{m: 1, width: '45ch'}} variant="outlined">
+                    <Button type="submit" variant="contained" size="large">
+                        Login
+                    </Button>
+                </FormControl>
+                {/*<button type="submit" className="btn btn-lg btn-primary w-25">
                     Login
-                </button>
+                </button>*/}
             </div>
         </form>
     )

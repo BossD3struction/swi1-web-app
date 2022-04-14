@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Models} from "./Models";
+import LoginResponse from "../models/response/LoginResponse";
 
 export const Users: FC = () => {
 
@@ -10,11 +11,24 @@ export const Users: FC = () => {
     const isUserLoggedIn = tokenStorageService.getToken();
     const url = "http://localhost:8080/user/list";
 
+    let user: LoginResponse = {
+        username: "SpaceMagic",
+        tokenType: "SpaceMagic",
+        accessToken: "SpaceMagic",
+        id: -101,
+        email: "SpaceMagic",
+        roles: ["SpaceMagic"]
+    };
+    if (isUserLoggedIn !== null) {
+        user = tokenStorageService.getUserOptimized();
+        console.log(user.roles.toString());
+    }
+
     const [users, setUsers] = useState<any>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isUserLoggedIn === null) {
+        if (isUserLoggedIn === null || user.roles.toString() === 'ROLE_USER') {
             navigate('/home');
         } else {
             axios.defaults.headers.common = {'Authorization': `Bearer ${isUserLoggedIn}`}

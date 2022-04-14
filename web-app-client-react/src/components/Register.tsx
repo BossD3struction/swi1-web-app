@@ -6,6 +6,7 @@ import RegisterRequest from "../models/request/RegisterRequest";
 import RegisterResponse from "../models/response/RegisterResponse";
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
+import {Button, FormControl} from "@mui/material";
 
 export const Register: FC = () => {
 
@@ -16,6 +17,8 @@ export const Register: FC = () => {
     const [username, setUsername] = useState<any>([]);
     const [email, setEmail] = useState<any>([]);
     const [password, setPassword] = useState<any>([]);
+    const [valid, setValid] = useState<any>(true);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,6 +26,12 @@ export const Register: FC = () => {
             navigate('/home');
         }
     }, [isUserLoggedIn, navigate]);
+
+    const handleValidation = (e: any) => {
+        const reg = new RegExp("[a-zA-Z0-9.-_]+@[a-zA-Z.-]{2,}[.][a-zA-Z]{2,}");
+        setValid(reg.test(e.target.value));
+        setEmail(e.target.value);
+    };
 
     async function registerRequest(e: any) {
 
@@ -65,50 +74,58 @@ export const Register: FC = () => {
     return (
         <form onSubmit={registerRequest}>
             <div className="row justify-content-center mb-4">
-                <TextField InputLabelProps={{required: false}}
-                           required
-                           error={username.length < 3 && username.length !== 0}
-                           helperText={username.length < 3 && username.length !== 0 ? "Username must be at least 3 characters long." : ''}
-                           id="username-input"
-                           label="Username"
-                           variant="outlined"
-                           type="text"
-                           onChange={(event) => {
-                               setUsername(event.target.value);
-                           }}
-                />
+                <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
+                    <TextField InputLabelProps={{required: false}}
+                               required
+                               error={username.length < 3 && username.length !== 0}
+                               helperText={username.length < 3 && username.length !== 0 ? "Username must be at least 3 characters long." : ''}
+                               id="username-input"
+                               label="Username"
+                               variant="outlined"
+                               type="text"
+                               onChange={(event) => {
+                                   setUsername(event.target.value);
+                               }}
+                    />
+                </FormControl>
             </div>
             <div className="row justify-content-center mb-4">
-                <TextField InputLabelProps={{required: false}}
-                           inputProps={{pattern: "[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"}}
-                           required
-                           id="email-input"
-                           label="Email"
-                           variant="outlined"
-                           type="email"
-                           onChange={(event) => {
-                               setEmail(event.target.value);
-                           }}
-                />
+                <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
+                    <TextField InputLabelProps={{required: false}}
+                               required
+                               error={!valid && email.length !== 0}
+                               helperText={!valid && email.length !== 0 ? "Email pattern: joe@gmail.com" : ''}
+                               id="email-input"
+                               label="Email"
+                               variant="outlined"
+                               type="text"
+                               inputProps={{pattern: "[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"}}
+                               onChange={(e) => handleValidation(e)}
+                    />
+                </FormControl>
             </div>
             <div className="row justify-content-center mb-4">
-                <TextField InputLabelProps={{required: false}}
-                           required
-                           error={password.length < 6 && password.length !== 0}
-                           helperText={password.length < 6 && password.length !== 0 ? "Password must be at least 6 characters long." : ''}
-                           id="password-input"
-                           label="Password"
-                           variant="outlined"
-                           type="password"
-                           onChange={(event) => {
-                               setPassword(event.target.value);
-                           }}
-                />
+                <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
+                    <TextField InputLabelProps={{required: false}}
+                               required
+                               error={password.length < 6 && password.length !== 0}
+                               helperText={password.length < 6 && password.length !== 0 ? "Password must be at least 6 characters long." : ''}
+                               id="password-input"
+                               label="Password"
+                               variant="outlined"
+                               type="password"
+                               onChange={(event) => {
+                                   setPassword(event.target.value);
+                               }}
+                    />
+                </FormControl>
             </div>
             <div className="row justify-content-center">
-                <button type="submit" className="btn btn-lg btn-success w-50">
-                    Register
-                </button>
+                <FormControl sx={{m: 1, width: '45ch'}} variant="outlined">
+                    <Button type="submit" variant="contained" size="large" color="success">
+                        Register
+                    </Button>
+                </FormControl>
             </div>
         </form>
     )
