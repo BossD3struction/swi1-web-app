@@ -11,22 +11,25 @@ export const MoviesManagement: FC = () => {
 
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
-    const url = "http://localhost:8080/movie/list";
 
     const [show, setShow] = useState(false);
-    const [movieId, setMovieId] = useState({});
     const [movies, setMovies] = useState<any>([]);
+    let [selectedMovie, setSelectedMovie] = useState<any>([]);
+    const [genresFromDatabase, setGenresFromDatabase] = useState<any>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isUserLoggedIn === null) {
             navigate('/home');
         } else {
-            axios.get(url).then(response => {
+            axios.get('http://localhost:8080/movie/list').then(response => {
                 setMovies(response.data)
             })
+            axios.get('http://localhost:8080/genre/list').then(response => {
+                setGenresFromDatabase(response.data);
+            })
         }
-    }, [isUserLoggedIn, navigate, url]);
+    }, [isUserLoggedIn, navigate]);
 
     function deleteMovieRequest(result: any, id: number) {
         if (result.isConfirmed) {
@@ -77,13 +80,17 @@ export const MoviesManagement: FC = () => {
     }
 
     function openUpdateMovieDialog(id: number) {
-        setMovieId(id);
-        setShow(true);
+        const url = `http://localhost:8080/movie/${id}`;
+        axios.get(url).then(response => {
+            setSelectedMovie(response.data)
+            setShow(true);
+        })
     }
 
     return (
         <>
-            <UpdateMovieDialogContext.Provider value={{show, setShow, movieId}}>
+            <UpdateMovieDialogContext.Provider
+                value={{show, setShow, selectedMovie, setSelectedMovie, genresFromDatabase}}>
                 <UpdateMovieDialog/>
                 <div className="card-body">
                     <h2>Movies</h2>
