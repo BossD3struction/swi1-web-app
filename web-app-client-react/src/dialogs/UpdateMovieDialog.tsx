@@ -1,4 +1,4 @@
-import React, {FC, useContext, useState} from "react";
+import React, {FC, useContext} from "react";
 import {Button, Modal} from "react-bootstrap";
 import {UpdateMovieDialogContext} from "../contexts/UpdateMovieDialogContext";
 import TextField from "@mui/material/TextField";
@@ -7,80 +7,27 @@ import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Stack} fr
 export const UpdateMovieDialog: FC = () => {
 
     const {show, setShow}: any = useContext(UpdateMovieDialogContext);
-    let {selectedMovie, setSelectedMovie}: any = useContext(UpdateMovieDialogContext);
+    let {selectedMovie, checkedGenresFromDatabase}: any = useContext(UpdateMovieDialogContext);
     const {genresFromDatabase}: any = useContext(UpdateMovieDialogContext);
     const handleClose = () => {
         setShow(false)
-        setSelectedMovie([]);
+        /*setSelectedMovie([]);
+        setCheckedGenres([]);*/
     };
-
-    /*const url = 'http://localhost:8080/genre/list';
-    const [databaseGenres, setDatabaseGenres] = useState<any>([]);
-    const [genres, setGenres] = useState<any>([]);*/
-
-    /*const [name, setName] = useState<any>([]);
-    const [year, setYear] = useState<any>([]);
-    const [runningTime, setRunningTime] = useState<any>([]);
-    const [bannerLink, setBannerLink] = useState<any>([]);
-    const [about, setAbout] = useState<any>([]);*/
-
-    /*const toggleHandler = (genre: any) => () => {
-        setGenres((state: any) => ({
-            ...state,
-            [genre.id]: state[genre.id] ? null : {
-                id: genre.id,
-                name: genre.name
-            }
-        }))
-    }*/
 
     const handleCheckboxChange = (event: any) => {
         let checkedGenreId = parseInt(event.target.value);
-        /*console.log(event.target.value);
-        console.log(parseInt(event.target.value));
-        console.log("checkedGenreId: " + checkedGenreId);*/
         let checkedGenres = [...selectedMovie.genresId, checkedGenreId];
         if (selectedMovie.genresId.includes(checkedGenreId)) {
-            checkedGenres = checkedGenres.filter((id) => id !== checkedGenreId);
+            checkedGenres = checkedGenres.filter((id: number) => id !== checkedGenreId);
         }
         selectedMovie.genresId = checkedGenres;
     };
 
-    const [checked, setChecked] = useState(false)
-    const handleClick = () => setChecked(!checked)
-
-    /*let sum = (x: number, y: number): number => {
-        return x + y;
-    }
-*/
-    /*const handleCheckboxChange = (event: any) => () => {
-        let checkedGenreId = parseInt(event.target.id, 10);
-        let checkedGenres = [...genres, checkedGenreId];
-        if (genres.includes(checkedGenreId)) {
-            checkedGenres = checkedGenres.filter((id) => id !== checkedGenreId);
-        }
-        setGenres(checkedGenres);
-    };*/
-
     const consoleInfo = () => {
-        console.log(selectedMovie);
-        /*console.log(selectedMovie.name);
-        console.log(selectedMovie.year);
-        console.log(selectedMovie.runningTime);
-        console.log(selectedMovie.bannerLink);
-        console.log(selectedMovie.about);*/
-        console.log("genres: " + selectedMovie.genresId);
-        console.log("-------");
-        /*console.log(genres);
-        console.log(selectedMovie.genres);*/
+        console.log("selectedMovie.genresId: " + selectedMovie.genresId);
+        console.log("checkedGenres: " + checkedGenresFromDatabase);
     }
-
-    /*useEffect(() => {
-        axios.get(url).then(response => {
-            setDatabaseGenres(response.data);
-            //setGenres(selectedMovie.genresId);
-        })
-    }, [url/!*, selectedMovie*!/]);*/
 
     return (
         <>
@@ -174,11 +121,10 @@ export const UpdateMovieDialog: FC = () => {
                                                 control={
                                                     <Checkbox
                                                         key={genre.name}
-                                                        //checked={e.target.checked}
+                                                        defaultChecked={checkedGenresFromDatabase.includes(genre.id)}
                                                         id={genre.toString().id}
                                                         name={genre.name}
                                                         value={genre.id}
-                                                        onClick={handleClick}
                                                         onChange={handleCheckboxChange}
                                                     />
                                                 }
@@ -195,10 +141,10 @@ export const UpdateMovieDialog: FC = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary">
                         Save Changes
                     </Button>
-                    <Button variant="primary" onClick={consoleInfo}>
+                    <Button variant="success" onClick={consoleInfo}>
                         Console log
                     </Button>
                 </Modal.Footer>

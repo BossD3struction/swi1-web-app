@@ -14,9 +14,11 @@ export const MoviesManagement: FC = () => {
 
     const [show, setShow] = useState(false);
     const [movies, setMovies] = useState<any>([]);
-    let [selectedMovie, setSelectedMovie] = useState<any>([]);
     const [genresFromDatabase, setGenresFromDatabase] = useState<any>([]);
+    const [checkedGenresFromDatabase, setCheckedGenresFromDatabase] = useState<any>([]);
     const navigate = useNavigate();
+
+    let [selectedMovie, setSelectedMovie] = useState<any>([]);
 
     useEffect(() => {
         if (isUserLoggedIn === null) {
@@ -82,7 +84,14 @@ export const MoviesManagement: FC = () => {
     function openUpdateMovieDialog(id: number) {
         const url = `http://localhost:8080/movie/${id}`;
         axios.get(url).then(response => {
-            setSelectedMovie(response.data)
+            setSelectedMovie(response.data);
+            const checkedGenresArray = response.data.genresId;
+            setCheckedGenresFromDatabase(checkedGenresArray);
+            /*const [checkedGenres, setCheckedGenres] = useState<any>(response.data.genresId);
+            console.log(response.data.genresId.includes(1));
+            console.log(selectedMovie.genresId.includes(1));
+            console.log(checkedGenresArray);
+            console.log(checkedGenresArray.includes(1));*/
             setShow(true);
         })
     }
@@ -90,7 +99,7 @@ export const MoviesManagement: FC = () => {
     return (
         <>
             <UpdateMovieDialogContext.Provider
-                value={{show, setShow, selectedMovie, setSelectedMovie, genresFromDatabase}}>
+                value={{show, setShow, selectedMovie, genresFromDatabase, checkedGenresFromDatabase}}>
                 <UpdateMovieDialog/>
                 <div className="card-body">
                     <h2>Movies</h2>
