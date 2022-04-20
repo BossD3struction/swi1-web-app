@@ -13,13 +13,12 @@ export const Register: FC = () => {
     let authService = new AuthService();
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState<any>([]);
     const [email, setEmail] = useState<any>([]);
     const [password, setPassword] = useState<any>([]);
     const [valid, setValid] = useState<any>(true);
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (isUserLoggedIn !== null) {
@@ -28,7 +27,7 @@ export const Register: FC = () => {
     }, [isUserLoggedIn, navigate]);
 
     const handleValidation = (e: any) => {
-        const reg = new RegExp("[a-zA-Z0-9.-_]+@[a-zA-Z.-]{2,}[.][a-zA-Z]{2,}");
+        const reg = new RegExp("[a-zA-Z\\d.-_]+@[a-zA-Z.-]{2,}[.][a-zA-Z]{2,}");
         setValid(reg.test(e.target.value));
         setEmail(e.target.value);
     };

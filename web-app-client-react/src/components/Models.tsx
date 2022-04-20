@@ -6,9 +6,6 @@ import LoginResponse from "../models/response/LoginResponse";
 
 export const Models: FC = () => {
 
-    let tokenStorageService = new TokenStorageService();
-    const isUserLoggedIn = tokenStorageService.getToken();
-
     let user: LoginResponse = {
         username: "SpaceMagic",
         tokenType: "SpaceMagic",
@@ -17,12 +14,13 @@ export const Models: FC = () => {
         email: "SpaceMagic",
         roles: ["SpaceMagic"]
     };
+    let tokenStorageService = new TokenStorageService();
+    const isUserLoggedIn = tokenStorageService.getToken();
+    const navigate = useNavigate();
+
     if (isUserLoggedIn !== null) {
         user = tokenStorageService.getUserOptimized();
-        console.log(user.roles.toString());
     }
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (isUserLoggedIn === null) {

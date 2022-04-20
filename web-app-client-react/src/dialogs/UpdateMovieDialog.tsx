@@ -3,16 +3,18 @@ import {Button, Modal} from "react-bootstrap";
 import {UpdateMovieDialogContext} from "../contexts/UpdateMovieDialogContext";
 import TextField from "@mui/material/TextField";
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Stack} from "@mui/material";
+import axios from "axios";
+import Swal from "sweetalert2";
+import UpdateMovieRequest from "../models/request/UpdateMovieRequest";
 
 export const UpdateMovieDialog: FC = () => {
 
-    const {show, setShow}: any = useContext(UpdateMovieDialogContext);
-    let {selectedMovie, checkedGenresFromDatabase}: any = useContext(UpdateMovieDialogContext);
+    const {show, setShow, isUserLoggedIn}: any = useContext(UpdateMovieDialogContext);
     const {genresFromDatabase}: any = useContext(UpdateMovieDialogContext);
+    let {selectedMovie, checkedGenresFromDatabase}: any = useContext(UpdateMovieDialogContext);
+
     const handleClose = () => {
-        setShow(false)
-        /*setSelectedMovie([]);
-        setCheckedGenres([]);*/
+        setShow(false);
     };
 
     const handleCheckboxChange = (event: any) => {
@@ -24,10 +26,61 @@ export const UpdateMovieDialog: FC = () => {
         selectedMovie.genresId = checkedGenres;
     };
 
-    const consoleInfo = () => {
+    function updateMovieRequest(result: any) {
+        if (result.isConfirmed) {
+            axios.defaults.headers.common = {'Authorization': `Bearer ${isUserLoggedIn}`}
+            let updateMovieRequest: UpdateMovieRequest = {
+                id: selectedMovie.id,
+                name: selectedMovie.name,
+                year: selectedMovie.year,
+                runningTime: selectedMovie.runningTime,
+                bannerLink: selectedMovie.bannerLink,
+                about: selectedMovie.about,
+                genresId: selectedMovie.genresId
+            }
+            axios.put(`http://localhost:8080/movie/update`, updateMovieRequest).then(async response => {
+                await Swal.fire({
+                    titleText: `${response.data.message}`,
+                    icon: 'success',
+                    confirmButtonText: 'Close'
+                });
+                window.location.reload();
+            }).catch(async function (error) {
+                if (error.toJSON().status === 401) {
+                    await Swal.fire({
+                        titleText: 'Movie with this name is already in database!',
+                        icon: 'error',
+                        width: 'auto',
+                        confirmButtonText: 'Close'
+                    });
+                }
+            });
+        }
+    }
+
+    async function updateMovie() {
+        try {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                updateMovieRequest(result);
+            })
+        } catch (err: any) {
+            console.log(err);
+        }
+    }
+
+    /*const consoleInfo = () => {
+        console.log(selectedMovie);
         console.log("selectedMovie.genresId: " + selectedMovie.genresId);
         console.log("checkedGenres: " + checkedGenresFromDatabase);
-    }
+    }*/
 
     return (
         <>
@@ -141,12 +194,12 @@ export const UpdateMovieDialog: FC = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary">
+                    <Button variant="primary" onClick={() => updateMovie()}>
                         Save Changes
                     </Button>
-                    <Button variant="success" onClick={consoleInfo}>
+                    {/*<Button variant="success" onClick={consoleInfo}>
                         Console log
-                    </Button>
+                    </Button>*/}
                 </Modal.Footer>
             </Modal>
         </>

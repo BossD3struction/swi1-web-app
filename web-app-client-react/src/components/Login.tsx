@@ -15,11 +15,11 @@ export const Login: FC = () => {
     let authService = new AuthService();
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState<any>([]);
     const [password, setPassword] = useState<any>([]);
     const [showPassword, setShowPassword] = useState<any>(false);
-    const navigate = useNavigate();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -115,16 +115,6 @@ export const Login: FC = () => {
                         }
                     />
                 </FormControl>
-                {/*<TextField InputLabelProps={{required: false}}
-                           required
-                           id="password-input"
-                           label="Password"
-                           variant="outlined"
-                           type="password"
-                           onChange={(event) => {
-                               setPassword(event.target.value);
-                           }}
-                />*/}
             </div>
             <div className="row justify-content-center">
                 <FormControl sx={{m: 1, width: '45ch'}} variant="outlined">
@@ -132,9 +122,6 @@ export const Login: FC = () => {
                         Login
                     </Button>
                 </FormControl>
-                {/*<button type="submit" className="btn btn-lg btn-primary w-25">
-                    Login
-                </button>*/}
             </div>
         </form>
     )

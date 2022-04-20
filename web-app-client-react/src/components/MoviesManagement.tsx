@@ -11,12 +11,12 @@ export const MoviesManagement: FC = () => {
 
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
+    const navigate = useNavigate();
 
     const [show, setShow] = useState(false);
     const [movies, setMovies] = useState<any>([]);
     const [genresFromDatabase, setGenresFromDatabase] = useState<any>([]);
     const [checkedGenresFromDatabase, setCheckedGenresFromDatabase] = useState<any>([]);
-    const navigate = useNavigate();
 
     let [selectedMovie, setSelectedMovie] = useState<any>([]);
 
@@ -99,7 +99,7 @@ export const MoviesManagement: FC = () => {
     return (
         <>
             <UpdateMovieDialogContext.Provider
-                value={{show, setShow, selectedMovie, genresFromDatabase, checkedGenresFromDatabase}}>
+                value={{show, setShow, selectedMovie, genresFromDatabase, checkedGenresFromDatabase, isUserLoggedIn}}>
                 <UpdateMovieDialog/>
                 <div className="card-body">
                     <h2>Movies</h2>

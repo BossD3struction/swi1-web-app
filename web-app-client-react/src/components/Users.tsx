@@ -7,10 +7,6 @@ import LoginResponse from "../models/response/LoginResponse";
 
 export const Users: FC = () => {
 
-    let tokenStorageService = new TokenStorageService();
-    const isUserLoggedIn = tokenStorageService.getToken();
-    const url = "http://localhost:8080/user/list";
-
     let user: LoginResponse = {
         username: "SpaceMagic",
         tokenType: "SpaceMagic",
@@ -19,24 +15,26 @@ export const Users: FC = () => {
         email: "SpaceMagic",
         roles: ["SpaceMagic"]
     };
-    if (isUserLoggedIn !== null) {
-        user = tokenStorageService.getUserOptimized();
-        console.log(user.roles.toString());
-    }
+    let tokenStorageService = new TokenStorageService();
+    const isUserLoggedIn = tokenStorageService.getToken();
+    const navigate = useNavigate();
 
     const [users, setUsers] = useState<any>([]);
-    const navigate = useNavigate();
+
+    if (isUserLoggedIn !== null) {
+        user = tokenStorageService.getUserOptimized();
+    }
 
     useEffect(() => {
         if (isUserLoggedIn === null || user.roles.toString() === 'ROLE_USER') {
             navigate('/home');
         } else {
             axios.defaults.headers.common = {'Authorization': `Bearer ${isUserLoggedIn}`}
-            axios.get(url).then(response => {
-                setUsers(response.data)
+            axios.get("http://localhost:8080/user/list").then(response => {
+                setUsers(response.data);
             })
         }
-    }, [isUserLoggedIn, navigate, url]);
+    }, [isUserLoggedIn, navigate]);
     return (
         <>
             <Models/>

@@ -8,20 +8,19 @@ export const Reviews: FC = () => {
 
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
-    const url = "http://localhost:8080/review/list";
+    const navigate = useNavigate();
 
     const [reviews, setReviews] = useState<any>([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (isUserLoggedIn === null) {
             navigate('/home');
         } else {
-            axios.get(url).then(response => {
-                setReviews(response.data)
+            axios.get("http://localhost:8080/review/list").then(response => {
+                setReviews(response.data);
             })
         }
-    }, [isUserLoggedIn, navigate, url]);
+    }, [isUserLoggedIn, navigate]);
     return (
         <>
             <Models/>

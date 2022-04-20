@@ -4,17 +4,17 @@ import LoginResponse from "../models/response/LoginResponse";
 
 export const Home: FC = () => {
 
+    let user: LoginResponse = {
+        username: "SpaceMagic",
+        tokenType: "SpaceMagic",
+        accessToken: "SpaceMagic",
+        id: -101,
+        email: "SpaceMagic",
+        roles: ["SpaceMagic"]
+    };
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
 
-    let user: LoginResponse = {
-        username: "NaN",
-        tokenType: "NaN",
-        accessToken: "NaN",
-        id: -101,
-        email: "NaN",
-        roles: ["NaN"]
-    };
     if (isUserLoggedIn !== null) {
         user = tokenStorageService.getUserOptimized();
     }

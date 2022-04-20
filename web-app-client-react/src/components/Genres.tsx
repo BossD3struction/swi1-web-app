@@ -8,20 +8,20 @@ export const Genres: FC = () => {
 
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
-    const url = "http://localhost:8080/genre/list";
+    const navigate = useNavigate();
 
     const [genres, setGenres] = useState<any>([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (isUserLoggedIn === null) {
             navigate('/home');
         } else {
-            axios.get(url).then(response => {
-                setGenres(response.data)
+            axios.get("http://localhost:8080/genre/list").then(response => {
+                setGenres(response.data);
             })
         }
-    }, [isUserLoggedIn, navigate, url]);
+    }, [isUserLoggedIn, navigate]);
+
     return (
         <>
             <Models/>

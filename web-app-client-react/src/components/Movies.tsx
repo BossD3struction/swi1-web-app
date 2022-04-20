@@ -8,20 +8,20 @@ export const Movies: FC = () => {
 
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
-    const url = "http://localhost:8080/movie/list";
+    const navigate = useNavigate();
 
     const [movies, setMovies] = useState<any>([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (isUserLoggedIn === null) {
             navigate('/home');
         } else {
-            axios.get(url).then(response => {
-                setMovies(response.data)
+            axios.get("http://localhost:8080/movie/list").then(response => {
+                setMovies(response.data);
             })
         }
-    }, [isUserLoggedIn, navigate, url]);
+    }, [isUserLoggedIn, navigate]);
+
     return (
         <>
             <Models/>
