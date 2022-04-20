@@ -4,10 +4,12 @@ import cz.osu.app.models.entities.Genre;
 import cz.osu.app.models.entities.Movie;
 import cz.osu.app.models.entities.Review;
 import cz.osu.app.requests.AddMovieRequest;
+import cz.osu.app.requests.UpdateMovieRequest;
 import cz.osu.app.responses.MessageResponse;
 import cz.osu.app.responses.MovieResponse;
 import cz.osu.app.services.MovieService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -41,31 +43,25 @@ public class MovieController {
     @PostMapping("/create/angular")
     @Secured(value = {"ROLE_ADMIN"})
     public ResponseEntity<?> createMovieAngular(@Valid @RequestBody AddMovieRequest addMovieRequest) {
-
         if (service.movieExistsByName(addMovieRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Movie is already in database!"));
         } else {
-
             if (addMovieRequest.getGenresId() != null) {
                 List<Genre> genres = new ArrayList<>();
-
-                for (long genreId : addMovieRequest.getGenresId())
+                for (long genreId : addMovieRequest.getGenresId()) {
                     genres.add(service.getGenre(genreId));
-
+                }
                 Movie movie = new Movie(addMovieRequest.getName(), addMovieRequest.getYear(),
                         addMovieRequest.getRunningTime(), addMovieRequest.getBannerLink(), addMovieRequest.getAbout(), genres);
-
                 service.save(movie);
             } else {
                 Movie movie = new Movie(addMovieRequest.getName(), addMovieRequest.getYear(),
                         addMovieRequest.getRunningTime(), addMovieRequest.getBannerLink(), addMovieRequest.getAbout());
-
                 service.save(movie);
             }
             return ResponseEntity.ok(new MessageResponse("Movie was successfully saved!"));
-
         }
     }
 
@@ -73,14 +69,45 @@ public class MovieController {
     @Secured(value = {"ROLE_ADMIN"})
     public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable("movieId") long movieId) {
         Movie movieFromDb = service.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + movieId));
+        updateValues(movie, movieFromDb);
+        service.save(movieFromDb);
+        return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
+    }
+
+    private void updateValues(@RequestBody Movie movie, Movie movieFromDb) {
         Objects.requireNonNull(movieFromDb).setName(movie.getName());
         Objects.requireNonNull(movieFromDb).setYear(movie.getYear());
         Objects.requireNonNull(movieFromDb).setRunningTime(movie.getRunningTime());
         Objects.requireNonNull(movieFromDb).setBannerLink(movie.getBannerLink());
         Objects.requireNonNull(movieFromDb).setAbout(movie.getAbout());
         Objects.requireNonNull(movieFromDb).setGenres(movie.getGenres());
+    }
+
+    @PutMapping("/update")
+    @Secured(value = {"ROLE_ADMIN"})
+    public ResponseEntity<?> updateMovieAngular(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
+        Movie movieFromDb = service.findById(updateMovieRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + updateMovieRequest.getId()));
+        if (updateMovieRequest.getGenresId() != null) {
+            List<Genre> genres = new ArrayList<>();
+            for (long genreId : updateMovieRequest.getGenresId()) {
+                genres.add(service.getGenre(genreId));
+            }
+            updateValuesAngular(updateMovieRequest, movieFromDb);
+            Objects.requireNonNull(movieFromDb).setGenres(genres);
+        } else {
+            updateValuesAngular(updateMovieRequest, movieFromDb);
+        }
         service.save(movieFromDb);
         return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
+    }
+
+    private void updateValuesAngular(@Valid @RequestBody UpdateMovieRequest updateMovieRequest, Movie movieFromDb) {
+        Objects.requireNonNull(movieFromDb).setName(updateMovieRequest.getName());
+        Objects.requireNonNull(movieFromDb).setYear(updateMovieRequest.getYear());
+        Objects.requireNonNull(movieFromDb).setRunningTime(updateMovieRequest.getRunningTime());
+        Objects.requireNonNull(movieFromDb).setBannerLink(updateMovieRequest.getBannerLink());
+        Objects.requireNonNull(movieFromDb).setAbout(updateMovieRequest.getAbout());
     }
 
     @DeleteMapping("/{movieId}/delete")
