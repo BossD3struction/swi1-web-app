@@ -9,7 +9,6 @@ import cz.osu.app.responses.MessageResponse;
 import cz.osu.app.responses.MovieResponse;
 import cz.osu.app.services.MovieService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -74,15 +73,6 @@ public class MovieController {
         return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
     }
 
-    private void updateValues(@RequestBody Movie movie, Movie movieFromDb) {
-        Objects.requireNonNull(movieFromDb).setName(movie.getName());
-        Objects.requireNonNull(movieFromDb).setYear(movie.getYear());
-        Objects.requireNonNull(movieFromDb).setRunningTime(movie.getRunningTime());
-        Objects.requireNonNull(movieFromDb).setBannerLink(movie.getBannerLink());
-        Objects.requireNonNull(movieFromDb).setAbout(movie.getAbout());
-        Objects.requireNonNull(movieFromDb).setGenres(movie.getGenres());
-    }
-
     @PutMapping("/update")
     @Secured(value = {"ROLE_ADMIN"})
     public ResponseEntity<?> updateMovieAngular(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
@@ -100,14 +90,6 @@ public class MovieController {
         }
         service.save(movieFromDb);
         return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
-    }
-
-    private void updateValuesAngular(@Valid @RequestBody UpdateMovieRequest updateMovieRequest, Movie movieFromDb) {
-        Objects.requireNonNull(movieFromDb).setName(updateMovieRequest.getName());
-        Objects.requireNonNull(movieFromDb).setYear(updateMovieRequest.getYear());
-        Objects.requireNonNull(movieFromDb).setRunningTime(updateMovieRequest.getRunningTime());
-        Objects.requireNonNull(movieFromDb).setBannerLink(updateMovieRequest.getBannerLink());
-        Objects.requireNonNull(movieFromDb).setAbout(updateMovieRequest.getAbout());
     }
 
     @DeleteMapping("/{movieId}/delete")
@@ -140,5 +122,22 @@ public class MovieController {
                 movie.getAbout(),
                 genreIds
         );
+    }
+
+    private void updateValues(@RequestBody Movie movie, Movie movieFromDb) {
+        Objects.requireNonNull(movieFromDb).setName(movie.getName());
+        Objects.requireNonNull(movieFromDb).setYear(movie.getYear());
+        Objects.requireNonNull(movieFromDb).setRunningTime(movie.getRunningTime());
+        Objects.requireNonNull(movieFromDb).setBannerLink(movie.getBannerLink());
+        Objects.requireNonNull(movieFromDb).setAbout(movie.getAbout());
+        Objects.requireNonNull(movieFromDb).setGenres(movie.getGenres());
+    }
+
+    private void updateValuesAngular(@Valid @RequestBody UpdateMovieRequest updateMovieRequest, Movie movieFromDb) {
+        Objects.requireNonNull(movieFromDb).setName(updateMovieRequest.getName());
+        Objects.requireNonNull(movieFromDb).setYear(updateMovieRequest.getYear());
+        Objects.requireNonNull(movieFromDb).setRunningTime(updateMovieRequest.getRunningTime());
+        Objects.requireNonNull(movieFromDb).setBannerLink(updateMovieRequest.getBannerLink());
+        Objects.requireNonNull(movieFromDb).setAbout(updateMovieRequest.getAbout());
     }
 }
