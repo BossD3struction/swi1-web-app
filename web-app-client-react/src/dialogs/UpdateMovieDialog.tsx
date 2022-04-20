@@ -153,6 +153,7 @@ export const UpdateMovieDialog: FC = () => {
                         <div className="row justify-content-center">
                             <Stack spacing={3}>
                                 <TextField
+                                    required
                                     id="about-input"
                                     label="About"
                                     multiline
