@@ -8,22 +8,23 @@ import {Home} from "./components/Home";
 import {Register} from "./components/Register";
 import {Login} from "./components/Login";
 import {NavigationBar} from "./components/NavigationBar";
-import {ToastContext} from "./contexts/ToastContext";
+import {MyToastContext} from "./contexts/MyToastContext";
 import {MyToast} from "./components/MyToast";
 import {Models} from "./components/Models";
 import {Reviews} from "./components/Reviews";
 import {Users} from "./components/Users";
 import {Genres} from "./components/Genres";
 import {MoviesManagement} from "./components/MoviesManagement";
+import {Profile} from "./components/Profile";
 
 function App() {
 
-    const [show, setShow] = useState(false);
+    const [showToast, setShowToast] = useState(false);
 
     return (
         <Router>
             <div className="container-fluid">
-                <ToastContext.Provider value={{show, setShow}}>
+                <MyToastContext.Provider value={{showToast, setShowToast}}>
                     <NavigationBar/>
                     <Container>
                         <Routes>
@@ -36,11 +37,12 @@ function App() {
                             <Route path="/genres" element={<Genres/>}/>
                             <Route path="/login" element={<Login/>}/>
                             <Route path="/register" element={<Register/>}/>
+                            <Route path="/profile" element={<Profile/>}/>
                             <Route path="/movie-management" element={<MoviesManagement/>}/>
                         </Routes>
                         <MyToast/>
                     </Container>
-                </ToastContext.Provider>
+                </MyToastContext.Provider>
             </div>
         </Router>
     )
