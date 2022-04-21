@@ -1,6 +1,6 @@
 <div class="mt-3 col-md-12" *ngIf="currentUser; else loggedOut">
   <div class="p-3 card card-container">
-    <form *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+    <form *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" autocomplete="off" novalidate>
 
       <div class="form-group">
         <label for="movieId">Select movie: </label>
