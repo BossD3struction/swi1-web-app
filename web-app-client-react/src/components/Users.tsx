@@ -3,18 +3,12 @@ import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Models} from "./Models";
-import LoginResponse from "../models/response/LoginResponse";
+import {ApplicationService} from "../services/ApplicationService";
 
 export const Users: FC = () => {
 
-    let user: LoginResponse = {
-        username: "SpaceMagic",
-        tokenType: "SpaceMagic",
-        accessToken: "SpaceMagic",
-        id: -101,
-        email: "SpaceMagic",
-        roles: ["SpaceMagic"]
-    };
+    let applicationService = new ApplicationService();
+    let user = applicationService.initLoginResponse();
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
     const navigate = useNavigate();
@@ -35,10 +29,11 @@ export const Users: FC = () => {
             })
         }
     }, [isUserLoggedIn, navigate]);
+
     return (
         <>
             <Models/>
-            <div className="card-body">
+            <div className="mt-3 card-body">
                 <h2>Users</h2>
                 <div className="table-responsive-sm">
                     <table className="table table-bordered table-striped">

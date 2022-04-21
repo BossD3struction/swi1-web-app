@@ -74,7 +74,7 @@ export const Login: FC = () => {
     }
 
     return (
-        <form onSubmit={loginRequest}>
+        <form onSubmit={loginRequest} autoComplete="off">
             <div className="row justify-content-center mb-4">
                 <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
                     <TextField InputLabelProps={{required: false}}

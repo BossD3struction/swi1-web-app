@@ -25,7 +25,7 @@ export const Genres: FC = () => {
     return (
         <>
             <Models/>
-            <div className="card-body">
+            <div className="mt-3 card-body">
                 <h2>Genres</h2>
                 <div className="table-responsive-sm">
                     <table className="table table-bordered table-striped">

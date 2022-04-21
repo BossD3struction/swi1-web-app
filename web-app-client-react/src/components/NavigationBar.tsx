@@ -2,17 +2,23 @@ import {Dropdown, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import React, {FC, useContext} from "react";
 import {TokenStorageService} from "../services/TokenStorageService";
-import {ToastContext} from "../contexts/ToastContext";
+import {MyToastContext} from "../contexts/MyToastContext";
+import {ApplicationService} from "../services/ApplicationService";
 
 export const NavigationBar: FC = () => {
 
+    let applicationService = new ApplicationService();
+    let user = applicationService.initLoginResponse();
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
+    const {setShowToast}: any = useContext(MyToastContext);
 
-    const {setShow}: any = useContext(ToastContext);
+    if (isUserLoggedIn !== null) {
+        user = tokenStorageService.getUserOptimized();
+    }
 
     function logout() {
-        setShow(true);
+        setShowToast(true);
         tokenStorageService.signOut();
     }
 
@@ -27,8 +33,9 @@ export const NavigationBar: FC = () => {
                             <Link to={'/models'} className="nav-link">Models</Link>
                             <NavDropdown id="nav-dropdown-button" title="Management">
                                 <Dropdown.Item href={'/movie-management'}>Movies</Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                <Dropdown.Item disabled href="">Reviews</Dropdown.Item>
+                                <Dropdown.Item disabled href="">Users</Dropdown.Item>
+                                <Dropdown.Item disabled href="">Genres</Dropdown.Item>
                             </NavDropdown>
                         </>
                     }
@@ -43,6 +50,7 @@ export const NavigationBar: FC = () => {
                     }
                     {isUserLoggedIn !== null &&
                         <>
+                            <Link to={'/profile'} className="nav-link">{user.username}</Link>
                             <Link to={'/home'} onClick={logout} className="nav-link">Logout</Link>
                         </>
                     }

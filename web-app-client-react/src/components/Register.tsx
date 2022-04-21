@@ -71,7 +71,7 @@ export const Register: FC = () => {
     }
 
     return (
-        <form onSubmit={registerRequest}>
+        <form onSubmit={registerRequest} autoComplete="off">
             <div className="row justify-content-center mb-4">
                 <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
                     <TextField InputLabelProps={{required: false}}

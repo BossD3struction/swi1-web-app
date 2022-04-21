@@ -2,18 +2,12 @@ import React, {FC, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Nav} from "react-bootstrap";
-import LoginResponse from "../models/response/LoginResponse";
+import {ApplicationService} from "../services/ApplicationService";
 
 export const Models: FC = () => {
 
-    let user: LoginResponse = {
-        username: "SpaceMagic",
-        tokenType: "SpaceMagic",
-        accessToken: "SpaceMagic",
-        id: -101,
-        email: "SpaceMagic",
-        roles: ["SpaceMagic"]
-    };
+    let applicationService = new ApplicationService();
+    let user = applicationService.initLoginResponse();
     let tokenStorageService = new TokenStorageService();
     const isUserLoggedIn = tokenStorageService.getToken();
     const navigate = useNavigate();

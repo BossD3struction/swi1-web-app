@@ -6,6 +6,8 @@ import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import {UpdateMovieDialog} from "../dialogs/UpdateMovieDialog";
 import {UpdateMovieDialogContext} from "../contexts/UpdateMovieDialogContext";
+import {CreateMovieDialog} from "../dialogs/CreateMovieDialog";
+import {CreateMovieDialogContext} from "../contexts/CreateMovieDialogContext";
 
 export const MoviesManagement: FC = () => {
 
@@ -13,7 +15,8 @@ export const MoviesManagement: FC = () => {
     const isUserLoggedIn = tokenStorageService.getToken();
     const navigate = useNavigate();
 
-    const [show, setShow] = useState(false);
+    const [showUpdateMovieDialog, setShowUpdateMovieDialog] = useState(false);
+    const [showCreateMovieDialog, setShowCreateMovieDialog] = useState(false);
     const [movies, setMovies] = useState<any>([]);
     const [genresFromDatabase, setGenresFromDatabase] = useState<any>([]);
     const [checkedGenresFromDatabase, setCheckedGenresFromDatabase] = useState<any>([]);
@@ -87,67 +90,80 @@ export const MoviesManagement: FC = () => {
             setSelectedMovie(response.data);
             const checkedGenresArray = response.data.genresId;
             setCheckedGenresFromDatabase(checkedGenresArray);
-            /*const [checkedGenres, setCheckedGenres] = useState<any>(response.data.genresId);
-            console.log(response.data.genresId.includes(1));
-            console.log(selectedMovie.genresId.includes(1));
-            console.log(checkedGenresArray);
-            console.log(checkedGenresArray.includes(1));*/
-            setShow(true);
+            setShowUpdateMovieDialog(true);
         })
     }
 
     return (
         <>
-            <UpdateMovieDialogContext.Provider
-                value={{show, setShow, selectedMovie, genresFromDatabase, checkedGenresFromDatabase, isUserLoggedIn}}>
-                <UpdateMovieDialog/>
-                <div className="card-body">
-                    <h2>Movies</h2>
-                    <div className="table-responsive-sm">
-                        <table className="table table-bordered table-striped">
-                            <thead className="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">name</th>
-                                <th scope="col">year</th>
-                                <th scope="col">runtime</th>
-                                <th scope="col">banner link</th>
-                                <th scope="col">about</th>
-                                <th scope="col">genres</th>
-                                <th scope="col">actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {movies.map((movie: any) => (
-                                <tr key={movie.id}>
-                                    <td>{movie.id}</td>
-                                    <td>{movie.name}</td>
-                                    <td>{movie.year}</td>
-                                    <td>{movie.runningTime}</td>
-                                    <td>{movie.bannerLink}</td>
-                                    <td>{movie.about}</td>
-                                    <td>
-                                        <ul>
-                                            {movie.genres.map((genre: any) => (
-                                                <li key={movie.id + genre.id}>{genre.name}</li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <Stack direction="horizontal" gap={3}>
-                                            <Button variant="primary" type="button"
-                                                    onClick={() => openUpdateMovieDialog(movie.id)}>Update</Button>
-                                            <Button variant="danger" type="button"
-                                                    onClick={() => deleteMovie(movie.id)}>Delete</Button>
-                                        </Stack>
-                                    </td>
+            <CreateMovieDialogContext.Provider value={{
+                showCreateMovieDialog,
+                setShowCreateMovieDialog,
+                genresFromDatabase,
+                isUserLoggedIn
+            }}>
+                <UpdateMovieDialogContext.Provider value={{
+                    showUpdateMovieDialog,
+                    setShowUpdateMovieDialog,
+                    genresFromDatabase,
+                    isUserLoggedIn,
+                    selectedMovie,
+                    checkedGenresFromDatabase
+                }}>
+                    <CreateMovieDialog/>
+                    <UpdateMovieDialog/>
+                    <div className="card-body">
+                        <h2>
+                            Movies
+                            <Button className="float-end" variant="success" type="button"
+                                    onClick={() => setShowCreateMovieDialog(true)}>Create</Button>
+                        </h2>
+                        <div className="table-responsive-sm">
+                            <table className="table table-bordered table-striped">
+                                <thead className="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">name</th>
+                                    <th scope="col">year</th>
+                                    <th scope="col">runtime</th>
+                                    <th scope="col">banner link</th>
+                                    <th scope="col">about</th>
+                                    <th scope="col">genres</th>
+                                    <th scope="col">actions</th>
                                 </tr>
-                            ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {movies.map((movie: any) => (
+                                    <tr key={movie.id}>
+                                        <td>{movie.id}</td>
+                                        <td>{movie.name}</td>
+                                        <td>{movie.year}</td>
+                                        <td>{movie.runningTime}</td>
+                                        <td>{movie.bannerLink}</td>
+                                        <td>{movie.about}</td>
+                                        <td>
+                                            <ul>
+                                                {movie.genres.map((genre: any) => (
+                                                    <li key={movie.id + genre.id}>{genre.name}</li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <Stack direction="horizontal" gap={3}>
+                                                <Button variant="primary" type="button"
+                                                        onClick={() => openUpdateMovieDialog(movie.id)}>Update</Button>
+                                                <Button variant="danger" type="button"
+                                                        onClick={() => deleteMovie(movie.id)}>Delete</Button>
+                                            </Stack>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </UpdateMovieDialogContext.Provider>
+                </UpdateMovieDialogContext.Provider>
+            </CreateMovieDialogContext.Provider>
         </>
     )
 }
