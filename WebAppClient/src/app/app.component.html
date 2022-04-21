@@ -31,7 +31,7 @@
           <div *ngIf="isLoggedIn">
             <div class="navbar-nav">
               <a href="/profile" class="nav-item nav-link" routerLink="profile">{{ username }}</a>
-              <a href class="nav-item nav-link" (click)="logout()">Logout</a>
+              <a id="logoutButton" class="nav-item nav-link" (click)="logout()">Logout</a>
             </div>
           </div>
         </div>

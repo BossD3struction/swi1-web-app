@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "./services/token-storage.service";
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +18,7 @@ export class AppComponent implements OnInit {
   showManagementBoard = false;
   showAddReviewBoard = false;
 
-  constructor(private tokenStorageService: TokenStorageService) {
+  constructor(private tokenStorageService: TokenStorageService, private _snackBar: MatSnackBar, private router: Router) {
   }
 
   // @ts-ignore
@@ -37,6 +39,15 @@ export class AppComponent implements OnInit {
   // @ts-ignore
   logout(): void {
     this.tokenStorageService.signOut();
-    window.location.reload();
+    this.isLoggedIn = false;
+    this.showAddReviewBoard = false;
+    this.showManagementBoard = false;
+    this.router.navigate(['/home']).then((navigated: boolean) => {
+      if (navigated) {
+        this._snackBar.open('You have successfully logged out', '', {
+          duration: 3000,
+        });
+      }
+    });
   }
 }
