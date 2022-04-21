@@ -1,5 +1,4 @@
-export default interface MovieResponse {
-    id: number;
+export default interface CreateMovieRequest {
     name: string;
     year: number;
     runningTime: number;
