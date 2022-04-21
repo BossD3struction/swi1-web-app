@@ -1,92 +1,84 @@
-import React, {FC, useContext} from "react";
+import React, {FC, useContext, useState} from "react";
 import {Button, Modal} from "react-bootstrap";
-import {UpdateMovieDialogContext} from "../contexts/UpdateMovieDialogContext";
 import TextField from "@mui/material/TextField";
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Stack} from "@mui/material";
 import axios from "axios";
 import Swal from "sweetalert2";
-import UpdateMovieRequest from "../models/request/UpdateMovieRequest";
+import {CreateMovieDialogContext} from "../contexts/CreateMovieDialogContext";
+import CreateMovieRequest from "../models/request/CreateMovieRequest";
 
-export const UpdateMovieDialog: FC = () => {
+export const CreateMovieDialog: FC = () => {
 
     const {
-        showUpdateMovieDialog,
-        setShowUpdateMovieDialog,
+        showCreateMovieDialog,
+        setShowCreateMovieDialog,
         genresFromDatabase,
         isUserLoggedIn
-    }: any = useContext(UpdateMovieDialogContext);
+    }: any = useContext(CreateMovieDialogContext);
 
-    let {selectedMovie, checkedGenresFromDatabase}: any = useContext(UpdateMovieDialogContext);
+    const [name, setName] = useState<any>([]);
+    const [year, setYear] = useState<any>([]);
+    const [runningTime, setRunningTime] = useState<any>([]);
+    const [bannerLink, setBannerLink] = useState<any>([]);
+    const [about, setAbout] = useState<any>([]);
+    const [genresId, setGenresId] = useState<any>([]);
 
     const handleClose = () => {
-        setShowUpdateMovieDialog(false);
+        setShowCreateMovieDialog(false);
     };
 
     const handleCheckboxChange = (event: any) => {
         let checkedGenreId = parseInt(event.target.value);
-        let checkedGenres = [...selectedMovie.genresId, checkedGenreId];
-        if (selectedMovie.genresId.includes(checkedGenreId)) {
+        let checkedGenres = [...genresId, checkedGenreId];
+        if (genresId.includes(checkedGenreId)) {
             checkedGenres = checkedGenres.filter((id: number) => id !== checkedGenreId);
         }
-        selectedMovie.genresId = checkedGenres;
+        setGenresId(checkedGenres);
     };
 
-    function updateMovieRequest(result: any) {
-        if (result.isConfirmed) {
-            axios.defaults.headers.common = {'Authorization': `Bearer ${isUserLoggedIn}`}
-            let updateMovieRequest: UpdateMovieRequest = {
-                id: selectedMovie.id,
-                name: selectedMovie.name,
-                year: selectedMovie.year,
-                runningTime: selectedMovie.runningTime,
-                bannerLink: selectedMovie.bannerLink,
-                about: selectedMovie.about,
-                genresId: selectedMovie.genresId
-            }
-            axios.put(`http://localhost:8080/movie/update`, updateMovieRequest).then(async response => {
+    function createMovieRequest(e: any) {
+        // this prevents page reload on form submit
+        e.preventDefault();
+        axios.defaults.headers.common = {'Authorization': `Bearer ${isUserLoggedIn}`}
+        let createMovieRequest: CreateMovieRequest = {
+            name: name,
+            year: year,
+            runningTime: runningTime,
+            bannerLink: bannerLink,
+            about: about,
+            genresId: genresId
+        }
+        axios.post(`http://localhost:8080/movie/create/angular`, createMovieRequest).then(async response => {
+            await Swal.fire({
+                titleText: `${response.data.message}`,
+                icon: 'success',
+                confirmButtonText: 'Close'
+            });
+            window.location.reload();
+        }).catch(async function (error) {
+            if (error.toJSON().status === 403) {
                 await Swal.fire({
-                    titleText: `${response.data.message}`,
-                    icon: 'success',
+                    titleText: 'You don\'t have permissions',
+                    icon: 'error',
                     confirmButtonText: 'Close'
                 });
-                window.location.reload();
-            }).catch(async function (error) {
-                if (error.toJSON().status === 403) {
-                    await Swal.fire({
-                        titleText: 'You don\'t have permissions',
-                        icon: 'error',
-                        confirmButtonText: 'Close'
-                    });
-                }
-            });
-        }
-    }
-
-    async function updateMovie(e: any) {
-        try {
-            // this prevents page reload on form submit
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, update it!'
-            }).then((result) => {
-                updateMovieRequest(result);
-            })
-        } catch (err: any) {
-            console.log(err);
-        }
+            }
+            if (error.toJSON().status === 400) {
+                await Swal.fire({
+                    titleText: 'Movie with this name is already in database!',
+                    icon: 'error',
+                    width: 'auto',
+                    confirmButtonText: 'Close'
+                });
+            }
+        });
     }
 
     return (
         <>
-            <Modal show={showUpdateMovieDialog} onHide={handleClose} dialogClassName="modal-50w" backdrop="static"
+            <Modal show={showCreateMovieDialog} onHide={handleClose} dialogClassName="modal-50w" backdrop="static"
                    keyboard={false}>
-                <form onSubmit={updateMovie} autoComplete="off">
+                <form onSubmit={createMovieRequest} autoComplete="off">
                     <Modal.Header closeButton>
                         <Modal.Title>Movie</Modal.Title>
                     </Modal.Header>
@@ -99,9 +91,8 @@ export const UpdateMovieDialog: FC = () => {
                                            label="Name"
                                            variant="outlined"
                                            type="text"
-                                           defaultValue={selectedMovie.name}
                                            onChange={(event) => {
-                                               selectedMovie.name = (event.target.value);
+                                               setName(event.target.value);
                                            }}
                                 />
                             </Stack>
@@ -114,9 +105,8 @@ export const UpdateMovieDialog: FC = () => {
                                            label="Year"
                                            variant="outlined"
                                            type="number"
-                                           defaultValue={selectedMovie.year}
                                            onChange={(event) => {
-                                               selectedMovie.year = (event.target.value);
+                                               setYear(event.target.value);
                                            }}
                                 />
                             </Stack>
@@ -129,9 +119,8 @@ export const UpdateMovieDialog: FC = () => {
                                            label="Running Time"
                                            variant="outlined"
                                            type="number"
-                                           defaultValue={selectedMovie.runningTime}
                                            onChange={(event) => {
-                                               selectedMovie.runningTime = (event.target.value);
+                                               setRunningTime(event.target.value);
                                            }}
                                 />
                             </Stack>
@@ -144,9 +133,8 @@ export const UpdateMovieDialog: FC = () => {
                                            label="Banner Link"
                                            variant="outlined"
                                            type="string"
-                                           defaultValue={selectedMovie.bannerLink}
                                            onChange={(event) => {
-                                               selectedMovie.bannerLink = (event.target.value);
+                                               setBannerLink(event.target.value);
                                            }}
                                 />
                             </Stack>
@@ -158,9 +146,8 @@ export const UpdateMovieDialog: FC = () => {
                                            id="about-input"
                                            label="About"
                                            multiline
-                                           defaultValue={selectedMovie.about}
                                            onChange={(event) => {
-                                               selectedMovie.about = (event.target.value);
+                                               setAbout(event.target.value);
                                            }}
                                 />
                             </Stack>
@@ -176,7 +163,6 @@ export const UpdateMovieDialog: FC = () => {
                                                 control={
                                                     <Checkbox
                                                         key={genre.name}
-                                                        defaultChecked={checkedGenresFromDatabase.includes(genre.id)}
                                                         id={genre.toString().id}
                                                         name={genre.name}
                                                         value={genre.id}
@@ -195,8 +181,8 @@ export const UpdateMovieDialog: FC = () => {
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button type="submit" variant="primary">
-                            Save Changes
+                        <Button type="submit" variant="success">
+                            Create
                         </Button>
                     </Modal.Footer>
                 </form>
