@@ -28,7 +28,7 @@ export const Users: FC = () => {
                 setUsers(response.data);
             })
         }
-    }, [isUserLoggedIn, navigate]);
+    }, [isUserLoggedIn, navigate, user.roles]);
 
     return (
         <>
