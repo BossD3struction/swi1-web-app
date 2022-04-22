@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
           this.content = JSON.parse(err.error).message;
         }
       );
-  }
+    }
   }
 
 }

@@ -28,7 +28,9 @@ export class ReviewsComponent implements OnInit {
         this.content = JSON.parse(err.error).message;
       }
     );
-    setTimeout(() => { this.ngOnInit() }, this.timeoutInMillis);
+    setTimeout(() => {
+      this.ngOnInit()
+    }, this.timeoutInMillis);
   }
 
 }

@@ -47,6 +47,10 @@ export class AppComponent implements OnInit {
         this._snackBar.open('You have successfully logged out', '', {
           duration: 3000,
         });
+      } else {
+        this._snackBar.open('You have successfully logged out', '', {
+          duration: 3000,
+        });
       }
     });
   }

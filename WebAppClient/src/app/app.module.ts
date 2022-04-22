@@ -16,11 +16,11 @@ import {MoviesComponent} from './pages/movies/movies.component';
 import {ReviewsComponent} from './pages/reviews/reviews.component';
 import {ManagementComponent} from './pages/management/management.component';
 import {AddReviewComponent} from './pages/add-review/add-review.component';
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MatButtonModule} from "@angular/material/button";
-import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AuthenticationGuard} from "./guards/authentication.guard";
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatSnackBarModule,
     BrowserAnimationsModule
   ],
-  providers: [UserService, MovieService, ReviewService, authInterceptorProviders, MatSnackBar],
+  providers: [UserService, MovieService, ReviewService, authInterceptorProviders, MatSnackBar, AuthenticationGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -11,8 +11,7 @@ export class MoviesComponent implements OnInit {
 
   // @ts-ignore
   content: string;
-  movies: Movie[] = []
-  currentUser: any;
+  movies: Movie[] = [];
 
   constructor(private movieService: MovieService) {
   }

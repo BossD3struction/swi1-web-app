@@ -1,19 +1,21 @@
-<h3 class="mt-3">Reviews</h3>
-<div class="mt-3 card" *ngFor="let review of reviews">
-  <div class="row g-0">
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title" *ngFor="let user of review.user | keyvalue">
+<div class="mt-3 p-4 card">
+  <h3 class="mt-3 text-center">Reviews</h3>
+  <div class="mt-3 card" *ngFor="let review of reviews">
+    <div class="row g-0">
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title" *ngFor="let user of review.user | keyvalue">
           <span *ngIf="user.key == 'username'">
             {{ user.value }}
           </span>
-        </h5>
-        <p class="card-text">{{review.text}}</p>
+          </h5>
+          <p class="card-text">{{review.text}}</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="reviews.length == 0" class="mt-3 alert alert-danger" role="alert">
-  This is movie doesn't have any reviews, yet!
+  <div *ngIf="reviews.length == 0" class="mt-3 alert alert-danger" role="alert">
+    This is movie doesn't have any reviews, yet!
+  </div>
 </div>
