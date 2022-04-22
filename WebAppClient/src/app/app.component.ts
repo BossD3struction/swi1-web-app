@@ -51,6 +51,10 @@ export class AppComponent implements OnInit {
         this._snackBar.open('You have successfully logged out', '', {
           duration: 3000,
         });
+        setTimeout(() => {
+          console.log("Delayed for 3.5 second.");
+          window.location.reload();
+        }, 3500);
       }
     });
   }
