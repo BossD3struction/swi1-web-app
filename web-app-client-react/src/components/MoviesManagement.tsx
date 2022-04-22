@@ -49,7 +49,7 @@ export const MoviesManagement: FC = () => {
             }).catch(async function (error) {
                 if (error.toJSON().status === 403) {
                     await Swal.fire({
-                        titleText: 'You don\'t have permissions',
+                        titleText: 'You don\'t have permissions!',
                         icon: 'error',
                         confirmButtonText: 'Close'
                     });
@@ -85,8 +85,7 @@ export const MoviesManagement: FC = () => {
     }
 
     function openUpdateMovieDialog(id: number) {
-        const url = `http://localhost:8080/movie/${id}`;
-        axios.get(url).then(response => {
+        axios.get(`http://localhost:8080/movie/${id}`).then(response => {
             setSelectedMovie(response.data);
             const checkedGenresArray = response.data.genresId;
             setCheckedGenresFromDatabase(checkedGenresArray);

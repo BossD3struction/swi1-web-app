@@ -53,7 +53,7 @@ export const UpdateMovieDialog: FC = () => {
             }).catch(async function (error) {
                 if (error.toJSON().status === 403) {
                     await Swal.fire({
-                        titleText: 'You don\'t have permissions',
+                        titleText: 'You don\'t have permissions!',
                         icon: 'error',
                         confirmButtonText: 'Close'
                     });

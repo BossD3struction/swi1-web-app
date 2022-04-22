@@ -23,9 +23,9 @@ function App() {
 
     return (
         <Router>
-            <div className="container-fluid">
-                <MyToastContext.Provider value={{showToast, setShowToast}}>
-                    <NavigationBar/>
+            <MyToastContext.Provider value={{showToast, setShowToast}}>
+                <NavigationBar/>
+                <div className="container-fluid">
                     <Container>
                         <Routes>
                             <Route path="/" element={<Home/>}/>
@@ -42,8 +42,8 @@ function App() {
                         </Routes>
                         <MyToast/>
                     </Container>
-                </MyToastContext.Provider>
-            </div>
+                </div>
+            </MyToastContext.Provider>
         </Router>
     )
 }

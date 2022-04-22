@@ -23,7 +23,7 @@ export const NavigationBar: FC = () => {
     }
 
     return (
-        <Navbar bg="light" expand="lg" className="px-3 mb-5">
+        <Navbar bg="dark" variant="dark" expand="lg" className="px-3 mb-5">
             <Navbar.Brand href={'/home'}>Movie Reviews</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" className="text-center">
