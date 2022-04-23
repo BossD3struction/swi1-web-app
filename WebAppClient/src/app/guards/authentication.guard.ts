@@ -16,6 +16,9 @@ export class AuthenticationGuard implements CanActivate {
     if (route.routeConfig?.path === 'management' && this.tokenStorageService.getUser().roles == 'ROLE_USER')
       await this.router.navigate(['/home']);
 
+    if (route.routeConfig?.path === 'users' && this.tokenStorageService.getUser().roles == 'ROLE_USER')
+      await this.router.navigate(['/home']);
+
     return this.tokenStorageService.isUserLoggedIn();
   }
 
