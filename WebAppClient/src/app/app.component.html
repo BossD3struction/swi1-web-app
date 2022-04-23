@@ -11,9 +11,22 @@
         <div *ngIf="showAddReviewBoard">
           <a href="/addReview" class="nav-item nav-link" routerLink="addReview">Add Review</a>
         </div>
-        <div *ngIf="showManagementBoard">
-          <a href="/management" class="nav-item nav-link" routerLink="management">Management - Add Movie</a>
-        </div>
+        <li *ngIf="showManagementBoard" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Management
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item" href="/users" routerLink="users">List Users</a>
+              <a class="dropdown-item" href="#">Update Movies</a>
+              <a class="dropdown-item" href="/management" routerLink="management">Add Movie</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item disabled" href="#">Reviews</a></li>
+            <li><a class="dropdown-item disabled" href="#">Users</a></li>
+            <li><a class="dropdown-item disabled" href="#">Genres</a></li>
+          </ul>
+        </li>
       </div>
     </div>
 

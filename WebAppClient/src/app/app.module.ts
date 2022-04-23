@@ -21,6 +21,9 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {MatButtonModule} from "@angular/material/button";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AuthenticationGuard} from "./guards/authentication.guard";
+import { UsersComponent } from './pages/users/users.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
@@ -33,6 +36,7 @@ import {AuthenticationGuard} from "./guards/authentication.guard";
     ReviewsComponent,
     ManagementComponent,
     AddReviewComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,9 @@ import {AuthenticationGuard} from "./guards/authentication.guard";
     OverlayModule,
     MatButtonModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [UserService, MovieService, ReviewService, authInterceptorProviders, MatSnackBar, AuthenticationGuard],
   bootstrap: [AppComponent]

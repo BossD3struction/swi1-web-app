@@ -9,6 +9,7 @@ import {ProfileComponent} from './pages/profile/profile.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {ReviewsComponent} from './pages/reviews/reviews.component';
 import {AuthenticationGuard} from "./guards/authentication.guard";
+import {UsersComponent} from "./pages/users/users.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
+  {path: 'users', component: UsersComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
