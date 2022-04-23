@@ -9,28 +9,28 @@ export class TokenStorageService {
     }
 
     signOut(): void {
-        window.sessionStorage.clear();
+        window.localStorage.clear();
     }
 
     public saveToken(token: string): void {
-        window.sessionStorage.removeItem(TOKEN_KEY);
-        window.sessionStorage.setItem(TOKEN_KEY, token);
+        window.localStorage.removeItem(TOKEN_KEY);
+        window.localStorage.setItem(TOKEN_KEY, token);
     }
 
     public getToken(): string | null {
-        return sessionStorage.getItem(TOKEN_KEY);
+        return localStorage.getItem(TOKEN_KEY);
     }
 
     public login(loginResponse: LoginResponse): void {
-        window.sessionStorage.removeItem(USER_KEY);
-        window.sessionStorage.setItem(USER_KEY, JSON.stringify(loginResponse));
+        window.localStorage.removeItem(USER_KEY);
+        window.localStorage.setItem(USER_KEY, JSON.stringify(loginResponse));
     }
 
     public getUser(): string {
-        return JSON.parse(sessionStorage.getItem(USER_KEY) || '');
+        return JSON.parse(localStorage.getItem(USER_KEY) || '');
     }
 
     public getUserOptimized(): LoginResponse {
-        return JSON.parse(sessionStorage.getItem(USER_KEY) || '');
+        return JSON.parse(localStorage.getItem(USER_KEY) || '');
     }
 }
