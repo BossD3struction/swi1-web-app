@@ -1,42 +1,4 @@
-<div class="mt-3 col-md-12" *ngIf="currentUser; else loggedOut">
-  <div class="mt-3 col-md-12" *ngIf="currentUser.roles == 'ROLE_ADMIN'; else welcomeSplash">
-    <div class="card-body">
-      <h2>List of Users</h2>
-      <div class="table-responsive-sm">
-        <table class="table table-bordered table-striped">
-          <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">isAdmin</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let user of users">
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-              {{true == user.admin ? 'Yes' : 'No' }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+<div class="mt-5 alert alert-info text-center" role="alert">
+  We welcome you on our page
 </div>
-
-<ng-template #loggedOut>
-  <div class="mt-5 alert alert-info text-center" role="alert">
-    We welcome you on our page, please register, so you can share something with us
-  </div>
-</ng-template>
-
-<ng-template #welcomeSplash>
-  <div class="mt-5 alert alert-info text-center" role="alert">
-    We welcome you on our page
-  </div>
-</ng-template>
 
