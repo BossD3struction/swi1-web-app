@@ -6,6 +6,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import {CreateMovieDialogContext} from "../contexts/CreateMovieDialogContext";
 import CreateMovieRequest from "../models/request/CreateMovieRequest";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 
 export const CreateMovieDialog: FC = () => {
 
@@ -17,7 +19,8 @@ export const CreateMovieDialog: FC = () => {
     }: any = useContext(CreateMovieDialogContext);
 
     const [name, setName] = useState<any>([]);
-    const [year, setYear] = useState<any>([]);
+    const [year, setYear] = useState<any>(new Date().getFullYear());
+    const [datePickerYearValue, setDatePickerYearValue] = useState<any>(new Date());
     const [runningTime, setRunningTime] = useState<any>([]);
     const [bannerLink, setBannerLink] = useState<any>([]);
     const [about, setAbout] = useState<any>([]);
@@ -98,18 +101,20 @@ export const CreateMovieDialog: FC = () => {
                             </Stack>
                         </div>
                         <div className="row justify-content-center mb-4">
-                            <Stack spacing={3}>
-                                <TextField InputLabelProps={{required: false}}
-                                           required
-                                           id="year-input"
-                                           label="Year"
-                                           variant="outlined"
-                                           type="number"
-                                           onChange={(event) => {
-                                               setYear(event.target.value);
-                                           }}
-                                />
-                            </Stack>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                    <DatePicker
+                                        views={['year']}
+                                        label="Year"
+                                        value={datePickerYearValue}
+                                        onChange={(newValue) => {
+                                            setDatePickerYearValue(newValue);
+                                            setYear(newValue.getFullYear());
+                                        }}
+                                        renderInput={(params) => <TextField {...params} helperText={null}/>}
+                                    />
+                                </Stack>
+                            </LocalizationProvider>
                         </div>
                         <div className="row justify-content-center mb-4">
                             <Stack spacing={3}>
