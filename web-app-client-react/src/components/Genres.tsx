@@ -1,8 +1,11 @@
-import {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useMemo, useState} from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Models} from "./Models";
+import DataTable, {TableColumn} from "react-data-table-component";
+import {Button, TextField} from "@mui/material";
+import {Container} from "react-bootstrap";
 
 export const Genres: FC = () => {
 
@@ -22,30 +25,80 @@ export const Genres: FC = () => {
         }
     }, [isUserLoggedIn, navigate]);
 
+    type DataRow = {
+        id: number;
+        name: number;
+    }
+
+    const columns: TableColumn<DataRow>[] = [
+        {
+            name: '#',
+            selector: row => row.id,
+            sortable: true,
+        },
+        {
+            name: 'name',
+            selector: row => row.name,
+            sortable: true,
+            wrap: true,
+        },
+    ]
+
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    const filteredItems = genres.filter(
+        (item: { name: string; }) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
+    );
+
+    // @ts-ignore
+    const FilterComponent = ({filterText, onFilter, onClear}) => (
+        <>
+            <TextField
+                autoComplete="off"
+                autoFocus
+                id="search"
+                type="text"
+                label="Filter by name"
+                aria-label="Search Input"
+                value={filterText}
+                onChange={onFilter}
+            />
+            <Button type="button" size="large" onClick={onClear}>
+                X
+            </Button>
+        </>
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent
+                onFilter={(e: { target: { value: React.SetStateAction<string>; }; }) => setFilterText(e.target.value)}
+                onClear={handleClear} filterText={filterText}/>
+        );
+    }, [filterText, resetPaginationToggle]);
+
     return (
         <>
             <Models/>
-            <div className="mt-3 card-body">
-                <h2>Genres</h2>
-                <div className="table-responsive-sm">
-                    <table className="table table-bordered table-striped">
-                        <thead className="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {genres.map((genre: any) => (
-                            <tr key={genre.id}>
-                                <td>{genre.id}</td>
-                                <td>{genre.name}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <Container className="mt-3">
+                <DataTable
+                    title="Genres"
+                    columns={columns}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    striped
+                />
+            </Container>
         </>
     )
 }

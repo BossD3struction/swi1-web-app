@@ -1,8 +1,11 @@
-import {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useMemo, useState} from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Models} from "./Models";
+import DataTable, {ExpanderComponentProps, TableColumn} from 'react-data-table-component';
+import {Button, TextField} from "@mui/material";
+import {Container} from "react-bootstrap";
 
 export const Movies: FC = () => {
 
@@ -22,46 +25,116 @@ export const Movies: FC = () => {
         }
     }, [isUserLoggedIn, navigate]);
 
+    type DataRow = {
+        id: number;
+        name: number;
+        year: number;
+        runningTime: number;
+        bannerLink: string,
+        about: string;
+        genres: any;
+    }
+
+    const columns: TableColumn<DataRow>[] = [
+        {
+            name: '#',
+            selector: row => row.id,
+            sortable: true,
+        },
+        {
+            name: 'name',
+            selector: row => row.name,
+            sortable: true,
+            wrap: true,
+            width: '280px',
+        },
+        {
+            name: 'year',
+            selector: row => row.year,
+            sortable: true,
+            width: '120px',
+        },
+        {
+            name: 'running time',
+            selector: row => row.runningTime,
+            sortable: true,
+            width: '120px',
+        },
+        {
+            name: 'banner link',
+            selector: row => row.bannerLink,
+            wrap: true,
+            width: '320px',
+        },
+        {
+            name: 'about',
+            selector: row => row.about,
+            wrap: true,
+            width: '1000px',
+        },
+    ]
+
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    const filteredItems = movies.filter(
+        (item: { name: string; }) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
+    );
+
+    // @ts-ignore
+    const FilterComponent = ({filterText, onFilter, onClear}) => (
+        <>
+            <TextField
+                autoComplete="off"
+                autoFocus
+                id="search"
+                type="text"
+                label="Filter by name"
+                aria-label="Search Input"
+                value={filterText}
+                onChange={onFilter}
+            />
+            <Button type="button" size="large" onClick={onClear}>
+                X
+            </Button>
+        </>
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent
+                onFilter={(e: { target: { value: React.SetStateAction<string>; }; }) => setFilterText(e.target.value)}
+                onClear={handleClear} filterText={filterText}/>
+        );
+    }, [filterText, resetPaginationToggle]);
+
+    const ExpandedComponent: React.FC<ExpanderComponentProps<DataRow>> = ({data}) => {
+        return <pre>genres: {JSON.stringify(data.genres, null, 2)}</pre>;
+    };
+
     return (
         <>
             <Models/>
-            <div className="mt-3 card-body">
-                <h2>Movies</h2>
-                <div className="table-responsive-sm">
-                    <table className="table table-bordered table-striped">
-                        <thead className="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">name</th>
-                            <th scope="col">year</th>
-                            <th scope="col">runtime</th>
-                            <th scope="col">banner link</th>
-                            <th scope="col">about</th>
-                            <th scope="col">genres</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {movies.map((movie: any) => (
-                            <tr key={movie.id}>
-                                <td>{movie.id}</td>
-                                <td>{movie.name}</td>
-                                <td>{movie.year}</td>
-                                <td>{movie.runningTime}</td>
-                                <td>{movie.bannerLink}</td>
-                                <td>{movie.about}</td>
-                                <td>
-                                    <ul>
-                                        {movie.genres.map((genre: any) => (
-                                            <li key={movie.id + genre.id}>{genre.name}</li>
-                                        ))}
-                                    </ul>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <Container className="mt-3">
+                <DataTable
+                    title="Movies"
+                    columns={columns}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
+                    striped
+                />
+            </Container>
         </>
     )
 }

@@ -1,8 +1,13 @@
-import {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useMemo, useState} from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Models} from "./Models";
+import DataTable, {TableColumn} from "react-data-table-component";
+import {User} from "../models/User";
+import Movie from "../models/Movie";
+import {Container} from "react-bootstrap";
+import {Button, TextField} from "@mui/material";
 
 export const Reviews: FC = () => {
 
@@ -22,34 +27,93 @@ export const Reviews: FC = () => {
         }
     }, [isUserLoggedIn, navigate]);
 
+    type DataRow = {
+        id: number;
+        user: User;
+        movie: Movie;
+        text: string;
+    }
+
+    const columns: TableColumn<DataRow>[] = [
+        {
+            name: '#',
+            selector: row => row.id,
+            sortable: true,
+        },
+        {
+            name: 'user',
+            selector: row => row.user.username,
+            sortable: true,
+            wrap: true,
+        },
+        {
+            name: 'movie',
+            selector: row => row.movie.name,
+            sortable: true,
+            wrap: true,
+        },
+        {
+            name: 'text',
+            selector: row => row.text,
+            wrap: true,
+        },
+    ]
+
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    const filteredItems = reviews.filter(
+        (item: { user: User; }) => item.user.username && item.user.username.toLowerCase().includes(filterText.toLowerCase()),
+    );
+
+    // @ts-ignore
+    const FilterComponent = ({filterText, onFilter, onClear}) => (
+        <>
+            <TextField
+                autoComplete="off"
+                autoFocus
+                id="search"
+                type="text"
+                label="Filter by user"
+                aria-label="Search Input"
+                value={filterText}
+                onChange={onFilter}
+            />
+            <Button type="button" size="large" onClick={onClear}>
+                X
+            </Button>
+        </>
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent
+                onFilter={(e: { target: { value: React.SetStateAction<string>; }; }) => setFilterText(e.target.value)}
+                onClear={handleClear} filterText={filterText}/>
+        );
+    }, [filterText, resetPaginationToggle]);
+
     return (
         <>
             <Models/>
-            <div className="mt-3 card-body">
-                <h2>Reviews</h2>
-                <div className="table-responsive-sm">
-                    <table className="table table-bordered table-striped">
-                        <thead className="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">user</th>
-                            <th scope="col">movie</th>
-                            <th scope="col">text</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {reviews.map((review: any) => (
-                            <tr key={review.id}>
-                                <td>{review.id}</td>
-                                <td>{review.user.username}</td>
-                                <td>{review.movie.name}</td>
-                                <td>{review.text}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <Container className="mt-3">
+                <DataTable
+                    title="Reviews"
+                    columns={columns}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    striped
+                />
+            </Container>
         </>
     )
 }

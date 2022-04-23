@@ -1,9 +1,12 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useMemo, useState} from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {TokenStorageService} from "../services/TokenStorageService";
 import {Models} from "./Models";
 import {ApplicationService} from "../services/ApplicationService";
+import DataTable, {TableColumn} from "react-data-table-component";
+import {Button, TextField} from "@mui/material";
+import {Container} from "react-bootstrap";
 
 export const Users: FC = () => {
 
@@ -30,36 +33,99 @@ export const Users: FC = () => {
         }
     }, [isUserLoggedIn, navigate, user.roles]);
 
+    type DataRow = {
+        id: number;
+        username: string;
+        email: string;
+        password: string;
+        admin: boolean;
+    }
+
+    const columns: TableColumn<DataRow>[] = [
+        {
+            name: '#',
+            selector: row => row.id,
+            sortable: true,
+        },
+        {
+            name: 'username',
+            selector: row => row.username,
+            sortable: true,
+            wrap: true,
+        },
+        {
+            name: 'email',
+            selector: row => row.email,
+            sortable: true,
+            wrap: true,
+        },
+        {
+            name: 'password',
+            selector: row => row.password,
+            wrap: true,
+        },
+        {
+            name: 'admin',
+            selector: row => row.admin ? 'yes' : 'no',
+            sortable: true,
+        },
+    ]
+
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    const filteredItems = users.filter(
+        (item: { username: string; }) => item.username && item.username.toLowerCase().includes(filterText.toLowerCase()),
+    );
+
+    // @ts-ignore
+    const FilterComponent = ({filterText, onFilter, onClear}) => (
+        <>
+            <TextField
+                autoComplete="off"
+                autoFocus
+                id="search"
+                type="text"
+                label="Filter by username"
+                aria-label="Search Input"
+                value={filterText}
+                onChange={onFilter}
+            />
+            <Button type="button" size="large" onClick={onClear}>
+                X
+            </Button>
+        </>
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent
+                onFilter={(e: { target: { value: React.SetStateAction<string>; }; }) => setFilterText(e.target.value)}
+                onClear={handleClear} filterText={filterText}/>
+        );
+    }, [filterText, resetPaginationToggle]);
+
     return (
         <>
             <Models/>
-            <div className="mt-3 card-body">
-                <h2>Users</h2>
-                <div className="table-responsive-sm">
-                    <table className="table table-bordered table-striped">
-                        <thead className="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">username</th>
-                            <th scope="col">email</th>
-                            <th scope="col">password</th>
-                            <th scope="col">is user admin?</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {users.map((user: any) => (
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.password}</td>
-                                {user.admin ? <td>yes</td> : < td>no</td>}
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <Container className="mt-3">
+                <DataTable
+                    title="Users"
+                    columns={columns}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    striped
+                />
+            </Container>
         </>
     )
 }
