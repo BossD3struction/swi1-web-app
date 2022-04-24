@@ -9,7 +9,8 @@
   <div class="row justify-content-center mb-4">
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput [value]="name.value" formControlName="name" required placeholder="Name" autocomplete="off" cdkFocusInitial>
+      <input matInput [value]="name.value" formControlName="name" required placeholder="Name" autocomplete="off"
+             cdkFocusInitial>
       <mat-error *ngIf="name.hasError('required')">
         Name cannot be empty.
       </mat-error>
