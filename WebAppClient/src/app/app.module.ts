@@ -24,6 +24,12 @@ import {AuthenticationGuard} from "./guards/authentication.guard";
 import { UsersComponent } from './pages/users/users.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
+import {MatInputModule} from "@angular/material/input";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import { GenresComponent } from './pages/genres/genres.component';
+import { CreateGenreDialogComponent } from './dialogs/create-genre-dialog/create-genre-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { UpdateGenreDialogComponent } from './dialogs/update-genre-dialog/update-genre-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,20 +43,26 @@ import {MatSortModule} from "@angular/material/sort";
     ManagementComponent,
     AddReviewComponent,
     UsersComponent,
+    GenresComponent,
+    CreateGenreDialogComponent,
+    UpdateGenreDialogComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    OverlayModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatSortModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        OverlayModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatSortModule,
+        MatInputModule,
+        MatPaginatorModule,
+        MatDialogModule
+    ],
   providers: [UserService, MovieService, ReviewService, authInterceptorProviders, MatSnackBar, AuthenticationGuard],
   bootstrap: [AppComponent]
 })

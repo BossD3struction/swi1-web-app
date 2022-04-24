@@ -10,10 +10,8 @@ import {Router} from "@angular/router";
 })
 export class AppComponent implements OnInit {
 
-  // @ts-ignore
-  username: string;
-  // @ts-ignore
-  private roles: string[];
+  username!: string;
+  private roles!: string[];
   isLoggedIn = false;
   showManagementBoard = false;
   showAddReviewBoard = false;
