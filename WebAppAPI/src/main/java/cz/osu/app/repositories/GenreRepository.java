@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface GenreRepository extends JpaRepository<Genre, Long>, JpaSpecificationExecutor<Genre> {
 
     void deleteById(long genreId);
+
+    Boolean existsByName(String name);
 }

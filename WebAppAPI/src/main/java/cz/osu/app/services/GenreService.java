@@ -29,4 +29,8 @@ public class GenreService {
     public Optional<Genre> findById(long id) {
         return genreRepository.findById(id);
     }
+
+    public Boolean genreExistsByName(String name) {
+        return genreRepository.existsByName(name);
+    }
 }

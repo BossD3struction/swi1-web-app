@@ -27,8 +27,14 @@ public class GenreController {
     @PostMapping("/create")
     @Secured(value = {"ROLE_ADMIN"})
     public ResponseEntity<?> createGenre(@RequestBody Genre genre) {
-        service.save(genre);
-        return ResponseEntity.ok(new MessageResponse("Genre was successfully created!"));
+        if (service.genreExistsByName(genre.getName())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Genre is already in database!"));
+        } else {
+            service.save(genre);
+            return ResponseEntity.ok(new MessageResponse("Genre was successfully created!"));
+        }
     }
 
     @PutMapping("/{genreId}/update")
@@ -46,4 +52,11 @@ public class GenreController {
         service.deleteById(genreId);
         return ResponseEntity.ok(new MessageResponse("Genre was successfully deleted!"));
     }
+
+    @GetMapping("/{genreId}")
+    @Secured(value = {"ROLE_ADMIN"})
+    public Genre getGenreById(@PathVariable("genreId") long genreId) {
+        return service.findById(genreId).orElseThrow(() -> new IllegalArgumentException("Genre not found for this id :: " + genreId));
+    }
 }
+
