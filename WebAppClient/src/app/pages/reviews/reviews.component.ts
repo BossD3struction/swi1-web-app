@@ -10,8 +10,7 @@ import {MovieService} from 'src/app/services/movie.service';
 })
 export class ReviewsComponent implements OnInit {
 
-  // @ts-ignore
-  content: string;
+  content!: string;
   id: any;
   reviews: Review[] = [];
   timeoutInMillis: number = 86400000;    // 24 hours

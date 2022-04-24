@@ -9,8 +9,7 @@ import {MovieService} from 'src/app/services/movie.service';
 })
 export class MoviesComponent implements OnInit {
 
-  // @ts-ignore
-  content: string;
+  content!: string;
   movies: Movie[] = [];
 
   constructor(private movieService: MovieService) {

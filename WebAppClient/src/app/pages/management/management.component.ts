@@ -12,10 +12,8 @@ import {TokenStorageService} from 'src/app/services/token-storage.service';
 })
 export class ManagementComponent implements OnInit {
 
-  // @ts-ignore
-  content: string;
-  // @ts-ignore
-  text: string;
+  content!: string;
+  text!: string;
   currentUser: any;
   movies: Movie[] = [];
   genres: Genre[] = [];

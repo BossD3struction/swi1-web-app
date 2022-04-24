@@ -10,8 +10,7 @@ import {UserService} from 'src/app/services/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  // @ts-ignore
-  content: string;
+  content!: string;
   currentUser: any;
 
   users: User[] = [];
