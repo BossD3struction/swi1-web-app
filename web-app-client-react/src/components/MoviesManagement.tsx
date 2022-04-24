@@ -139,7 +139,7 @@ export const MoviesManagement: FC = () => {
                                         <td>{movie.year}</td>
                                         <td>{movie.runningTime}</td>
                                         <td>{movie.bannerLink}</td>
-                                        <td>{movie.about}</td>
+                                        <td id="about">{movie.about}</td>
                                         <td>
                                             <ul>
                                                 {movie.genres.map((genre: any) => (

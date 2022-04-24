@@ -13,3 +13,10 @@ footer {
     background-color: #e9ecef;
     border-radius: .3rem;
 }
+
+td#about{
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
