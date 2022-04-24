@@ -14,7 +14,7 @@ footer {
     border-radius: .3rem;
 }
 
-td#about{
+td#about {
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
