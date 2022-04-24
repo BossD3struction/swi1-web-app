@@ -1,0 +1,25 @@
+<div class="mt-5 card-body">
+  <h2>
+    Genres
+    <button type="button" class="btn btn-success float-end" (click)="openCreateGenreDialog()">Create</button>
+  </h2>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col" style="width: 16%">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let genre of genres">
+      <td>{{ genre.id }}</td>
+      <td>{{ genre.name }}</td>
+      <td>
+        <button type="button" class="btn btn-primary" (click)="openUpdateGenreDialog(genre.id)">Update</button>
+        <button type="button" class="btn btn-danger float-end" (click)="deleteGenre(genre.id)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
