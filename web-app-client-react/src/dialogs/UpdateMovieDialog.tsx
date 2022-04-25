@@ -58,6 +58,14 @@ export const UpdateMovieDialog: FC = () => {
                         confirmButtonText: 'Close'
                     });
                 }
+                if (error.toJSON().status === 400) {
+                    await Swal.fire({
+                        titleText: 'Movie with this name is already in database!',
+                        icon: 'error',
+                        width: 'auto',
+                        confirmButtonText: 'Close'
+                    });
+                }
             });
         }
     }
