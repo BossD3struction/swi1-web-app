@@ -33,4 +33,8 @@ public class GenreService {
     public Boolean genreExistsByName(String name) {
         return genreRepository.existsByName(name);
     }
+
+    public Genre getGenreByName(String name) {
+        return genreRepository.getGenreByName(name);
+    }
 }

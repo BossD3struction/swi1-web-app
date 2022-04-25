@@ -40,10 +40,17 @@ public class GenreController {
     @PutMapping("/{genreId}/update")
     @Secured(value = {"ROLE_ADMIN"})
     public ResponseEntity<?> updateGenre(@RequestBody Genre genre, @PathVariable("genreId") long genreId) {
-        Genre genreFromDb = service.findById(genreId).orElseThrow(() -> new IllegalArgumentException("Genre not found for this id :: " + genreId));
-        Objects.requireNonNull(genreFromDb).setName(genre.getName());
-        service.save(genreFromDb);
-        return ResponseEntity.ok(new MessageResponse("Genre was successfully updated!"));
+        if (service.genreExistsByName(genre.getName())
+                && genre.getId() != service.getGenreByName(genre.getName()).getId()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Genre is already in database!"));
+        } else {
+            Genre genreFromDb = service.findById(genreId).orElseThrow(() -> new IllegalArgumentException("Genre not found for this id :: " + genreId));
+            Objects.requireNonNull(genreFromDb).setName(genre.getName());
+            service.save(genreFromDb);
+            return ResponseEntity.ok(new MessageResponse("Genre was successfully updated!"));
+        }
     }
 
     @DeleteMapping("/{genreId}/delete")

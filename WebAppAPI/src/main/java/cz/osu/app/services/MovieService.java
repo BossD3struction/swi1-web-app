@@ -36,6 +36,10 @@ public class MovieService {
         return movieRepository.existsByName(name);
     }
 
+    public Movie getMovieByName(String name) {
+        return movieRepository.getMovieByName(name);
+    }
+
     public Optional<Movie> findById(long id) {
         return movieRepository.findById(id);
     }

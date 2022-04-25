@@ -11,4 +11,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecific
     void deleteById(long movieId);
 
     Boolean existsByName(String name);
+
+    Movie getMovieByName(String name);
 }

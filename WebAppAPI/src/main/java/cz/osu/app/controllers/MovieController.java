@@ -76,20 +76,27 @@ public class MovieController {
     @PutMapping("/update")
     @Secured(value = {"ROLE_ADMIN"})
     public ResponseEntity<?> updateMovieAngular(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
-        Movie movieFromDb = service.findById(updateMovieRequest.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + updateMovieRequest.getId()));
-        if (updateMovieRequest.getGenresId() != null) {
-            List<Genre> genres = new ArrayList<>();
-            for (long genreId : updateMovieRequest.getGenresId()) {
-                genres.add(service.getGenre(genreId));
-            }
-            updateValuesAngular(updateMovieRequest, movieFromDb);
-            Objects.requireNonNull(movieFromDb).setGenres(genres);
+        if (service.movieExistsByName(updateMovieRequest.getName())
+                && updateMovieRequest.getId() != service.getMovieByName(updateMovieRequest.getName()).getId()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Movie is already in database!"));
         } else {
-            updateValuesAngular(updateMovieRequest, movieFromDb);
+            Movie movieFromDb = service.findById(updateMovieRequest.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Movie not found for this id :: " + updateMovieRequest.getId()));
+            if (updateMovieRequest.getGenresId() != null) {
+                List<Genre> genres = new ArrayList<>();
+                for (long genreId : updateMovieRequest.getGenresId()) {
+                    genres.add(service.getGenre(genreId));
+                }
+                updateValuesAngular(updateMovieRequest, movieFromDb);
+                Objects.requireNonNull(movieFromDb).setGenres(genres);
+            } else {
+                updateValuesAngular(updateMovieRequest, movieFromDb);
+            }
+            service.save(movieFromDb);
+            return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
         }
-        service.save(movieFromDb);
-        return ResponseEntity.ok(new MessageResponse("Movie was successfully updated!"));
     }
 
     @DeleteMapping("/{movieId}/delete")

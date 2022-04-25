@@ -11,4 +11,6 @@ public interface GenreRepository extends JpaRepository<Genre, Long>, JpaSpecific
     void deleteById(long genreId);
 
     Boolean existsByName(String name);
+
+    Genre getGenreByName(String name);
 }
