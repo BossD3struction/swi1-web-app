@@ -48,7 +48,7 @@ export class CreateGenreDialogComponent implements OnInit {
       if (err instanceof HttpErrorResponse) {
         if (err.status === 400) {
           await Swal.fire({
-            titleText: 'Genre is already in database!',
+            titleText: 'Genre with this name is already in database!',
             icon: 'error',
             confirmButtonText: 'Close'
           });

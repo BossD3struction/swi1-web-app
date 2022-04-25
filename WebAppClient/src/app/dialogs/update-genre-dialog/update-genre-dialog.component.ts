@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import Swal from "sweetalert2";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UpdateGenreRequest} from "../../models/requests/update-genre-request";
+import {Genre} from "../../models/genre";
 
 @Component({
   selector: 'app-update-genre-dialog',
@@ -13,7 +14,6 @@ import {UpdateGenreRequest} from "../../models/requests/update-genre-request";
 })
 export class UpdateGenreDialogComponent implements OnInit {
 
-  content!: string;
   public updateGenreForm: FormGroup;
 
   constructor(private genreService: GenreService, private dialogRef: MatDialogRef<UpdateGenreDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -24,13 +24,8 @@ export class UpdateGenreDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.genreService.getGenreById(this.data.genreId).subscribe(
-      data => {
-        this.name.setValue(data.name);
-      }, err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    );
+    let selectedGenre = this.data.allGenres.find((item: Genre) => item.id === this.data.genreId);
+    this.name.setValue(selectedGenre.name);
   }
 
   closeDialog() {
@@ -38,7 +33,6 @@ export class UpdateGenreDialogComponent implements OnInit {
   }
 
   public async updateGenreRequest(result: any): Promise<void> {
-
     if (result.isConfirmed) {
       const updateGenreRequest: UpdateGenreRequest = {
         name: this.name.value
@@ -57,7 +51,7 @@ export class UpdateGenreDialogComponent implements OnInit {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 400) {
             await Swal.fire({
-              titleText: 'Genre is already in database!',
+              titleText: 'Genre with this name is already in database!',
               icon: 'error',
               confirmButtonText: 'Close'
             });
