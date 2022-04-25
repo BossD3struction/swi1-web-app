@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'username', 'email', 'password', 'admin'];
   dataSource = new MatTableDataSource<User>();
+  filterValue: string = '';
 
   constructor(private userService: UserService, private token: TokenStorageService, private _liveAnnouncer: LiveAnnouncer) {
   }
@@ -34,6 +35,11 @@ export class UsersComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  clearFilter() {
+    this.filterValue = '';
+    this.dataSource.filter = '';
   }
 
   announceSortChange(sortState: Sort) {

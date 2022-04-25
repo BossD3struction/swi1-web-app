@@ -1,7 +1,8 @@
 <mat-form-field appearance="standard">
   <mat-label>Filter by username</mat-label>
-  <input matInput (keyup)="applyFilter($event)" autocomplete="off">
+  <input matInput (keyup)="applyFilter($event)" autocomplete="off" [(ngModel)]="filterValue">
 </mat-form-field>
+<button mat-flat-button (click)="clearFilter()">X</button>
 
 <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
        class="mat-elevation-z8">
