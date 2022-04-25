@@ -56,7 +56,7 @@ export class GenresComponent implements OnInit {
 
   openUpdateGenreDialog(id: number) {
     let dialog = this.dialog.open(UpdateGenreDialogComponent, {
-      data: {genreId: id},
+      data: {genreId: id, allGenres: this.genres},
       width: '450px',
       height: '280px',
       disableClose: true,
