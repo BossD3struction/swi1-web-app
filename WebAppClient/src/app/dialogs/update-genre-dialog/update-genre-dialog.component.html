@@ -14,10 +14,13 @@
       <mat-error *ngIf="name.hasError('required')">
         Name cannot be empty.
       </mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">
+        Number detected or whitespaces at the beginning/end of the text.
+      </mat-error>
     </mat-form-field>
   </div>
   <div class="row justify-content-center">
-    <button class="btn btn-primary w-25 me-3" [disabled]="updateGenreForm.invalid" (click)="updateGenre()">
+    <button class="btn btn-primary w-25 me-3" [disabled]="updateGenreForm.invalid || name.value.trim() === selectedGenre.name" (click)="updateGenre()">
       Update
     </button>
     <button class="btn btn-secondary w-25" mat-button [mat-dialog-close]="">

@@ -18,7 +18,7 @@ export class CreateGenreDialogComponent implements OnInit {
   constructor(private genreService: GenreService, private dialogRef: MatDialogRef<CreateGenreDialogComponent>) {
 
     this.createGenreForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required, Validators.pattern('^[^\\s]+[a-zA-Z]+(\\s+[^\\s]+[a-zA-Z])*$')]),
     })
   }
 

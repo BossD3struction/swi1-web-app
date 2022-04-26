@@ -14,6 +14,9 @@
       <mat-error *ngIf="name.hasError('required')">
         Name cannot be empty.
       </mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">
+        Number detected or whitespaces at the beginning/end of the text.
+      </mat-error>
     </mat-form-field>
   </div>
   <div class="row justify-content-center">

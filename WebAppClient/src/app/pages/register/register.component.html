@@ -6,32 +6,39 @@
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" name="username" [(ngModel)]="form.username" required minlength="3"
-               #username="ngModel"/>
+               #username="ngModel" pattern="^[^\s]+(\s+[^\s]+)*$"/>
         <div class="alert alert-danger" *ngIf="f.submitted && username.invalid">
           <div *ngIf="username.errors['required']">Username is required</div>
           <div *ngIf="username.errors['minlength']">
             Username must be at least 3 characters
           </div>
+          <div *ngIf="username.errors['pattern']">
+            Whitespaces detected at the beginning/end of the text
+          </div>
         </div>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" name="email" [(ngModel)]="form.email" required email #email="ngModel"/>
+        <input type="text" class="form-control" name="email" [(ngModel)]="form.email" required
+               pattern="[a-zA-Z\d.-_]+@[a-zA-Z.-]{2,}[.][a-zA-Z]{2,}" #email="ngModel"/>
         <div class="alert alert-danger" *ngIf="f.submitted && email.invalid">
           <div *ngIf="email.errors['required']">Email is required</div>
-          <div *ngIf="email.errors['email']">
-            Email must be a valid email address
+          <div *ngIf="email.errors['pattern']">
+            Email pattern: joe@gmail.com
           </div>
         </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required minlength="6"
-               #password="ngModel"/>
+               #password="ngModel" pattern="^[^\s]+(\s+[^\s]+)*$"/>
         <div class="alert alert-danger" *ngIf="f.submitted && password.invalid">
           <div *ngIf="password.errors['required']">Password is required</div>
           <div *ngIf="password.errors['minlength']">
             Password must be at least 6 characters
+          </div>
+          <div *ngIf="password.errors['pattern']">
+            Whitespaces detected at the beginning/end of the text
           </div>
         </div>
       </div>

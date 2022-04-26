@@ -7,48 +7,53 @@
         <div class="form-group">
           <label for="name">Name: </label>
           <input type="text" class="form-control" id="name" name="name" [(ngModel)]="form.name" #name="ngModel"
-                 required>
+                 required pattern="^[^\s]+(\s+[^\s]+)*$">
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && name.invalid">
           <div *ngIf="name.errors['required']">Name is required</div>
+          <div *ngIf="name.errors['pattern']">Whitespaces detected at the beginning/end of the text</div>
         </div>
 
         <div class="form-group">
           <label for="year">Year: </label>
-          <input type="number" class="form-control" id="year" name="year" [(ngModel)]="form.year" #year="ngModel"
-                 required>
+          <input type="tel" class="form-control" id="year" name="year" [(ngModel)]="form.year" #year="ngModel"
+                 required maxlength="4" pattern="^[0-9]+$">
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && year.invalid">
           <div *ngIf="year.errors['required']">Year is required</div>
+          <div *ngIf="year.errors['pattern']">Year must contain only positive numbers and no whitespaces</div>
         </div>
 
         <div class="form-group">
           <label for="runningTime">Running time: </label>
-          <input type="number" class="form-control" id="runningTime" name="runningTime" [(ngModel)]="form.runningTime"
-                 #runningTime="ngModel" required>
+          <input type="tel" class="form-control" id="runningTime" name="runningTime" [(ngModel)]="form.runningTime"
+                 #runningTime="ngModel" required maxlength="3" pattern="^[0-9]+$">
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && runningTime.invalid">
           <div *ngIf="runningTime.errors['required']">Running time is required</div>
+          <div *ngIf="runningTime.errors['pattern']">Running time must contain only positive numbers and no whitespaces</div>
         </div>
 
         <div class="form-group">
           <label for="bannerLink">Banner link: </label>
           <input type="text" class="form-control" id="bannerLink" name="bannerLink"
                  placeholder="http://localhost:8080/images/"
-                 [(ngModel)]="form.bannerLink" #bannerLink="ngModel" required>
+                 [(ngModel)]="form.bannerLink" #bannerLink="ngModel" required pattern="^[^\s]+(\s+[^\s]+)*$">
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && bannerLink.invalid">
           <div *ngIf="bannerLink.errors['required']">Banner link is required</div>
+          <div *ngIf="bannerLink.errors['pattern']">Whitespaces detected at the beginning/end of the text</div>
         </div>
 
         <div class="form-group">
           <label for="about">About: </label>
           <textarea class="form-control" id="about" name="about" rows="14" cols="100"
-                    [(ngModel)]="form.about" #about="ngModel" required>
+                    [(ngModel)]="form.about" #about="ngModel" required pattern="^[^\s]+(\s+[^\s]+)*$">
           </textarea>
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && about.invalid">
           <div *ngIf="about.errors['required']">About is required</div>
+          <div *ngIf="about.errors['pattern']">Whitespaces detected at the beginning/end of the text</div>
         </div>
 
         <div class="form-group">

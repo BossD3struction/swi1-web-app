@@ -4,23 +4,24 @@
           novalidate>
 
       <div class="form-group">
-        <label for="movieId">Select movie: </label>
+        <label for="movieId">Movie: </label>
         <select class="form-control" id="movieId" name="movieId" [(ngModel)]="form.movieId" #movieId="ngModel" required>
           <option value="{{movie.id}}" *ngFor="let movie of movies">{{movie.name}}</option>
         </select>
       </div>
       <div class="alert alert-danger" *ngIf="f.submitted && movieId.invalid">
-        <div *ngIf="text.errors['required']">Movie is required</div>
+        <div *ngIf="movieId.errors['required']">Movie is required</div>
       </div>
 
       <div class="form-group">
         <label for="text">Review: </label>
-        <textarea class="form-control" name="text" id="text" rows="14" cols="100" required
+        <textarea class="form-control" name="text" id="text" rows="14" cols="100" required pattern="^[^\s]+(\s+[^\s]+)*$"
                   [(ngModel)]="form.text" #text="ngModel">
         </textarea>
       </div>
       <div class="alert alert-danger" *ngIf="f.submitted && text.invalid">
         <div *ngIf="text.errors['required']">Review is required</div>
+        <div *ngIf="text.errors['pattern']">Whitespaces detected at the beginning/end of the text</div>
       </div>
 
       <div class="form-group">

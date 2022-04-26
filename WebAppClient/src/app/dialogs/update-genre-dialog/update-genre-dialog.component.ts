@@ -15,17 +15,18 @@ import {Genre} from "../../models/genre";
 export class UpdateGenreDialogComponent implements OnInit {
 
   public updateGenreForm: FormGroup;
+  public selectedGenre!: Genre;
 
   constructor(private genreService: GenreService, private dialogRef: MatDialogRef<UpdateGenreDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.updateGenreForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required, Validators.pattern('^[^\\s]+[a-zA-Z]+(\\s+[^\\s]+[a-zA-Z])*$')]),
     })
   }
 
   ngOnInit(): void {
-    let selectedGenre = this.data.allGenres.find((item: Genre) => item.id === this.data.genreId);
-    this.name.setValue(selectedGenre.name);
+    this.selectedGenre = this.data.allGenres.find((item: Genre) => item.id === this.data.genreId);
+    this.name.setValue(this.selectedGenre.name);
   }
 
   closeDialog() {

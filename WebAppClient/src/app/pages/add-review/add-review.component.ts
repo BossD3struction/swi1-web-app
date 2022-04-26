@@ -28,6 +28,7 @@ export class AddReviewComponent implements OnInit {
     this.movieService.listMovies().subscribe(
       data => {
         this.movies = data;
+        this.form.movieId = data[0].id;
       }, err => {
         this.content = JSON.parse(err.error).message;
       }

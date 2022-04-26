@@ -6,17 +6,23 @@
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" name="username" [(ngModel)]="form.username" required
-               #username="ngModel"/>
+               #username="ngModel" pattern="^[^\s]+(\s+[^\s]+)*$"/>
         <div class="alert alert-danger" role="alert" *ngIf="f.submitted && username.invalid">
-          Username is required!
+          <div *ngIf="username.errors['required']">Username is required</div>
+          <div *ngIf="username.errors['pattern']">
+            Whitespaces detected at the beginning/end of the text
+          </div>
         </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required
-               #password="ngModel"/>
+               #password="ngModel" pattern="^[^\s]+(\s+[^\s]+)*$"/>
         <div class="alert alert-danger" role="alert" *ngIf="f.submitted && password.invalid">
           <div *ngIf="password.errors['required']">Password is required</div>
+          <div *ngIf="password.errors['pattern']">
+            Whitespaces detected at the beginning/end of the text
+          </div>
         </div>
       </div>
       <div class="form-group">
