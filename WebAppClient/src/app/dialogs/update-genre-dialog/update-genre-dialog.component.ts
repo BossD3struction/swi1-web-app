@@ -56,6 +56,7 @@ export class UpdateGenreDialogComponent implements OnInit {
               icon: 'error',
               confirmButtonText: 'Close'
             });
+            this.name.setValue(this.selectedGenre.name);
           }
         }
       }
