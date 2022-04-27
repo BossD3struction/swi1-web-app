@@ -61,4 +61,26 @@ export class ManagementComponent implements OnInit {
     );
   }
 
+  checkYearNumberSize(year: number) {
+    if (year === 0) {
+      this.form.year = 1;
+    }
+    if (year > 9999) {
+      this.form.year = 2022;
+    }
+  }
+
+  checkRunningTimeNumberSize(runningTime: number) {
+    if (runningTime === 0) {
+      this.form.runningTime = 1;
+    }
+    if (runningTime > 999) {
+      this.form.runningTime = 100;
+    }
+  }
+
+  preventUnwantedInput(e: any) {
+    let symbols = ["e", "E", "+", "-", "."];
+    (symbols.includes(e.key) && e.preventDefault())
+  }
 }

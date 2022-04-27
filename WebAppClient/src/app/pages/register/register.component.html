@@ -20,7 +20,7 @@
       <div class="form-group">
         <label for="email">Email</label>
         <input type="text" class="form-control" name="email" [(ngModel)]="form.email" required
-               pattern="[a-zA-Z\d.-_]+@[a-zA-Z.-]{2,}[.][a-zA-Z]{2,}" #email="ngModel"/>
+               pattern="^[a-zA-Z\d.-_]+@[a-zA-Z.-]{2,}[.][a-zA-Z]{2,}$" #email="ngModel"/>
         <div class="alert alert-danger" *ngIf="f.submitted && email.invalid">
           <div *ngIf="email.errors['required']">Email is required</div>
           <div *ngIf="email.errors['pattern']">

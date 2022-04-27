@@ -16,22 +16,25 @@
 
         <div class="form-group">
           <label for="year">Year: </label>
-          <input type="tel" class="form-control" id="year" name="year" [(ngModel)]="form.year" #year="ngModel"
-                 required maxlength="4" pattern="^[0-9]+$">
+          <input type="number" class="form-control" id="year" name="year" [(ngModel)]="form.year" #year="ngModel"
+                 required pattern="^[0-9]+$" (keyup)="checkYearNumberSize(form.year)"
+                 (keydown)="preventUnwantedInput($event)">
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && year.invalid">
           <div *ngIf="year.errors['required']">Year is required</div>
-          <div *ngIf="year.errors['pattern']">Year must contain only positive numbers and no whitespaces</div>
+          <div *ngIf="year.errors['pattern']">Year begins with number 0</div>
         </div>
 
         <div class="form-group">
           <label for="runningTime">Running time: </label>
-          <input type="tel" class="form-control" id="runningTime" name="runningTime" [(ngModel)]="form.runningTime"
-                 #runningTime="ngModel" required maxlength="3" pattern="^[0-9]+$">
+          <input type="number" class="form-control" id="runningTime" name="runningTime" [(ngModel)]="form.runningTime"
+                 #runningTime="ngModel" required pattern="^[0-9]+$"
+                 (keyup)="checkRunningTimeNumberSize(form.runningTime)" (keydown)="preventUnwantedInput($event)">
         </div>
         <div class="alert alert-danger" *ngIf="f.submitted && runningTime.invalid">
           <div *ngIf="runningTime.errors['required']">Running time is required</div>
-          <div *ngIf="runningTime.errors['pattern']">Running time must contain only positive numbers and no whitespaces</div>
+          <div *ngIf="runningTime.errors['pattern']">Running time begins with number 0
+          </div>
         </div>
 
         <div class="form-group">
