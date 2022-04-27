@@ -32,18 +32,12 @@ export const UpdateMovieDialog: FC = () => {
     };
 
     const handleYearValidation = (e: any) => {
-        if (e.target.value.length !== 0) {
-            if (e.target.value.length <= 4) {
-                selectedMovie.year = e.target.value;
-            } else {
-                e.target.value = selectedMovie.year;
-            }
-            setValidYear(true);
-            if (e.target.value[0] == 0) {
-                setValidYear(false);
-            }
-        } else {
+        if (e.target.value < 1900 || e.target.value > 2099) {
             setValidYear(false);
+            selectedMovie.year = e.target.value;
+        } else {
+            setValidYear(true);
+            selectedMovie.year = e.target.value;
         }
     }
 
@@ -77,6 +71,11 @@ export const UpdateMovieDialog: FC = () => {
 
     const handleClose = () => {
         setShowUpdateMovieDialog(false);
+        setValidName(true);
+        setValidYear(true);
+        setValidRunningTime(true);
+        setValidBannerLink(true);
+        setValidAbout(true);
     };
 
     const handleCheckboxChange = (event: any) => {
@@ -182,7 +181,7 @@ export const UpdateMovieDialog: FC = () => {
                                     InputLabelProps={{required: false}}
                                     required
                                     error={!validYear}
-                                    helperText={!validYear ? "Year is empty or begins with number 0" : ''}
+                                    helperText={!validYear ? "Year is not in range 1900 - 2099" : ''}
                                     id="year-input"
                                     label="Year"
                                     variant="outlined"
@@ -220,6 +219,7 @@ export const UpdateMovieDialog: FC = () => {
                                     id="banner-link-input"
                                     label="Banner Link"
                                     variant="outlined"
+                                    placeholder="http://localhost:8080/images/"
                                     type="string"
                                     defaultValue={selectedMovie.bannerLink}
                                     onChange={(e) => handleBannerLinkValidation(e)}

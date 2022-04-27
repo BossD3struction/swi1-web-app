@@ -68,6 +68,10 @@ export const CreateMovieDialog: FC = () => {
 
     const handleClose = () => {
         setShowCreateMovieDialog(false);
+        setValidName(true);
+        setValidRunningTime(true);
+        setValidBannerLink(true);
+        setValidAbout(true);
     };
 
     const handleCheckboxChange = (event: any) => {
@@ -118,7 +122,7 @@ export const CreateMovieDialog: FC = () => {
     }
 
     function isDisabledChecker() {
-        return !validName || !validRunningTime || !validBannerLink || !validAbout;
+        return !validName || !validRunningTime || !validBannerLink || !validAbout || (year < 1900 || year > 2099);
     }
 
     return (
@@ -154,13 +158,12 @@ export const CreateMovieDialog: FC = () => {
                                             value={datePickerYearValue}
                                             onChange={(newValue) => {
                                                 setDatePickerYearValue(newValue);
-                                                if (newValue != null) {
-                                                    if (newValue.getFullYear() != 0)
-                                                        setYear(newValue.getFullYear());
+                                                if (newValue != null && newValue != 'Invalid Date') {
+                                                    setYear(newValue.getFullYear());
                                                 } else {
                                                     newValue = new Date();
                                                     setDatePickerYearValue(newValue);
-                                                    setYear(new Date().getFullYear());
+                                                    setYear(1800);
                                                 }
                                             }}
                                             renderInput={(params) => <TextField {...params} helperText={null}/>}
@@ -194,7 +197,9 @@ export const CreateMovieDialog: FC = () => {
                                            id="banner-link-input"
                                            label="Banner Link"
                                            variant="outlined"
+                                           placeholder="http://localhost:8080/images/"
                                            type="string"
+                                           defaultValue="http://localhost:8080/images/"
                                            onChange={(e) => handleBannerLinkValidation(e)}
                                 />
                             </Stack>
