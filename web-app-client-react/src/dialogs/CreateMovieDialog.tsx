@@ -46,7 +46,7 @@ export const CreateMovieDialog: FC = () => {
                 e.target.value = runningTime;
             }
             setValidRunningTime(true);
-            if (e.target.value[0] == 0) {
+            if (e.target.value[0] === 0) {
                 setValidRunningTime(false);
             }
         } else {
@@ -72,6 +72,7 @@ export const CreateMovieDialog: FC = () => {
         setValidRunningTime(true);
         setValidBannerLink(true);
         setValidAbout(true);
+        setDatePickerYearValue(new Date());
     };
 
     const handleCheckboxChange = (event: any) => {
@@ -158,7 +159,7 @@ export const CreateMovieDialog: FC = () => {
                                             value={datePickerYearValue}
                                             onChange={(newValue) => {
                                                 setDatePickerYearValue(newValue);
-                                                if (newValue != null && newValue != 'Invalid Date') {
+                                                if (newValue != null && newValue !== 'Invalid Date') {
                                                     setYear(newValue.getFullYear());
                                                 } else {
                                                     newValue = new Date();
