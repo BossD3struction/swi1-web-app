@@ -16,8 +16,7 @@ export class ReviewService {
   constructor(private http: HttpClient, private token: TokenStorageService) {
   }
 
-  // @ts-ignore
-  public saveReview(review): Observable<any> {
+  public saveReview(review: any): Observable<any> {
     let currentUser = this.token.getUser();
     return this.http.post<Review>(API_URL + 'create/angular', {
       userId: currentUser.id,

@@ -24,8 +24,7 @@ export class MovieService {
     return this.http.get<Review[]>(API_URL + id + '/reviews');
   }
 
-  // @ts-ignore
-  public saveMovie(movie, genresFormArray): Observable<any> {
+  public saveMovie(movie: any, genresFormArray: Array<any>): Observable<any> {
     return this.http.post<Movie>(API_URL + 'create/angular', {
       name: movie.name,
       year: movie.year,

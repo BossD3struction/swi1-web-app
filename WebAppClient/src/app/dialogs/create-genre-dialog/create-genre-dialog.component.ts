@@ -30,7 +30,6 @@ export class CreateGenreDialogComponent implements OnInit {
   }
 
   public async createGenre(): Promise<void> {
-
     const createGenreRequest: CreateGenreRequest = {
       name: this.name.value
     };

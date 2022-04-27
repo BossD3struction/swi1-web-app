@@ -19,22 +19,17 @@ export class AppComponent implements OnInit {
   constructor(private tokenStorageService: TokenStorageService, private _snackBar: MatSnackBar, private router: Router) {
   }
 
-  // @ts-ignore
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
-
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.roles = user.roles;
       this.username = user.username;
-      if (this.roles.includes('ROLE_ADMIN') || this.roles.includes('ROLE_USER')) {
-        this.showAddReviewBoard = true;
-      }
+      this.showAddReviewBoard = this.roles.includes('ROLE_ADMIN') || this.roles.includes('ROLE_USER')
       this.showManagementBoard = this.roles.includes('ROLE_ADMIN');
     }
   }
 
-  // @ts-ignore
   logout(): void {
     this.tokenStorageService.signOut();
     this.isLoggedIn = false;
@@ -42,6 +37,10 @@ export class AppComponent implements OnInit {
     this.showManagementBoard = false;
     this.router.navigate(['/home']).then((navigated: boolean) => {
       if (navigated) {
+        this._snackBar.open('You have successfully logged out', '', {
+          duration: 3000,
+        });
+      } else {
         this._snackBar.open('You have successfully logged out', '', {
           duration: 3000,
         });
