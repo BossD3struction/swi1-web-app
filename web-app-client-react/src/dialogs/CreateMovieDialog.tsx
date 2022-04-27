@@ -26,6 +26,46 @@ export const CreateMovieDialog: FC = () => {
     const [about, setAbout] = useState<any>([]);
     const [genresId, setGenresId] = useState<any>([]);
 
+    const [validName, setValidName] = useState<any>(true);
+    const [validRunningTime, setValidRunningTime] = useState<any>(true);
+    const [validBannerLink, setValidBannerLink] = useState<any>(true);
+    const [validAbout, setValidAbout] = useState<any>(true);
+    const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+
+    const handleNameValidation = (e: any) => {
+        const reg = new RegExp("^[^\\s]+(\\s+[^\\s]+)*$");
+        setValidName(reg.test(e.target.value));
+        setName(e.target.value);
+    };
+
+    const handleRunningTimeValidation = (e: any) => {
+        if (e.target.value.length !== 0) {
+            if (e.target.value.length <= 3) {
+                setRunningTime(e.target.value);
+            } else {
+                e.target.value = runningTime;
+            }
+            setValidRunningTime(true);
+            if (e.target.value[0] == 0) {
+                setValidRunningTime(false);
+            }
+        } else {
+            setValidRunningTime(false);
+        }
+    }
+
+    const handleBannerLinkValidation = (e: any) => {
+        const reg = new RegExp("^[^\\s]+(\\s+[^\\s]+)*$");
+        setValidBannerLink(reg.test(e.target.value));
+        setBannerLink(e.target.value);
+    };
+
+    const handleAboutValidation = (e: any) => {
+        const reg = new RegExp("^[^\\s]+(\\s+[^\\s]+)*$");
+        setValidAbout(reg.test(e.target.value));
+        setAbout(e.target.value);
+    };
+
     const handleClose = () => {
         setShowCreateMovieDialog(false);
     };
@@ -77,6 +117,10 @@ export const CreateMovieDialog: FC = () => {
         });
     }
 
+    function isDisabledChecker() {
+        return !validName || !validRunningTime || !validBannerLink || !validAbout;
+    }
+
     return (
         <>
             <Modal show={showCreateMovieDialog} onHide={handleClose} dialogClassName="modal-50w" backdrop="static"
@@ -90,29 +134,50 @@ export const CreateMovieDialog: FC = () => {
                             <Stack spacing={3}>
                                 <TextField InputLabelProps={{required: false}}
                                            required
+                                           error={!validName}
+                                           helperText={!validName ? "String is empty or whitespaces detected at the beginning/end of the text" : ''}
                                            id="name-input"
                                            label="Name"
                                            variant="outlined"
                                            type="text"
-                                           onChange={(event) => {
-                                               setName(event.target.value);
-                                           }}
+                                           onChange={(e) => handleNameValidation(e)}
                                 />
                             </Stack>
                         </div>
                         <div className="row justify-content-center mb-4">
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <Stack spacing={3}>
-                                    <DatePicker
-                                        views={['year']}
-                                        label="Year"
-                                        value={datePickerYearValue}
-                                        onChange={(newValue) => {
-                                            setDatePickerYearValue(newValue);
-                                            setYear(newValue.getFullYear());
-                                        }}
-                                        renderInput={(params) => <TextField {...params} helperText={null}/>}
-                                    />
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <DatePicker
+                                            views={['year']}
+                                            label="Year"
+                                            value={datePickerYearValue}
+                                            onChange={(newValue) => {
+                                                setDatePickerYearValue(newValue);
+                                                if (newValue != null) {
+                                                    if (newValue.getFullYear() != 0)
+                                                        setYear(newValue.getFullYear());
+                                                } else {
+                                                    newValue = new Date();
+                                                    setDatePickerYearValue(newValue);
+                                                    setYear(new Date().getFullYear());
+                                                }
+                                            }}
+                                            renderInput={(params) => <TextField {...params} helperText={null}/>}
+                                        />
+                                       {/* <StaticDatePicker
+                                            views={['year']}
+                                            displayStaticWrapperAs="desktop"
+                                            openTo="year"
+                                            value={datePickerYearValue}
+                                            onChange={(newValue) => {
+                                                setDatePickerYearValue(newValue);
+                                                setYear(newValue.getFullYear());
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />*/}
+                                    </LocalizationProvider>
+
                                 </Stack>
                             </LocalizationProvider>
                         </div>
@@ -120,13 +185,14 @@ export const CreateMovieDialog: FC = () => {
                             <Stack spacing={3}>
                                 <TextField InputLabelProps={{required: false}}
                                            required
+                                           error={!validRunningTime}
+                                           helperText={!validRunningTime ? "Running time is empty or begins with number 0" : ''}
                                            id="running-time-input"
                                            label="Running Time"
                                            variant="outlined"
                                            type="number"
-                                           onChange={(event) => {
-                                               setRunningTime(event.target.value);
-                                           }}
+                                           onChange={(e) => handleRunningTimeValidation(e)}
+                                           onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
                                 />
                             </Stack>
                         </div>
@@ -134,13 +200,13 @@ export const CreateMovieDialog: FC = () => {
                             <Stack spacing={3}>
                                 <TextField InputLabelProps={{required: false}}
                                            required
+                                           error={!validBannerLink}
+                                           helperText={!validBannerLink ? "String is empty or whitespaces detected at the beginning/end of the text" : ''}
                                            id="banner-link-input"
                                            label="Banner Link"
                                            variant="outlined"
                                            type="string"
-                                           onChange={(event) => {
-                                               setBannerLink(event.target.value);
-                                           }}
+                                           onChange={(e) => handleBannerLinkValidation(e)}
                                 />
                             </Stack>
                         </div>
@@ -148,12 +214,12 @@ export const CreateMovieDialog: FC = () => {
                             <Stack spacing={3}>
                                 <TextField InputLabelProps={{required: false}}
                                            required
+                                           error={!validAbout}
+                                           helperText={!validAbout ? "String is empty or whitespaces detected at the beginning/end of the text" : ''}
                                            id="about-input"
                                            label="About"
                                            multiline
-                                           onChange={(event) => {
-                                               setAbout(event.target.value);
-                                           }}
+                                           onChange={(e) => handleAboutValidation(e)}
                                 />
                             </Stack>
                         </div>
@@ -186,7 +252,7 @@ export const CreateMovieDialog: FC = () => {
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button type="submit" variant="success">
+                        <Button type="submit" variant="success" disabled={isDisabledChecker()}>
                             Create
                         </Button>
                     </Modal.Footer>

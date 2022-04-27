@@ -1,4 +1,4 @@
-import React, {FC, useContext} from "react";
+import React, {FC, useContext, useState} from "react";
 import {Button, Modal} from "react-bootstrap";
 import {UpdateMovieDialogContext} from "../contexts/UpdateMovieDialogContext";
 import TextField from "@mui/material/TextField";
@@ -17,6 +17,63 @@ export const UpdateMovieDialog: FC = () => {
     }: any = useContext(UpdateMovieDialogContext);
 
     let {selectedMovie, checkedGenresFromDatabase}: any = useContext(UpdateMovieDialogContext);
+
+    const [validName, setValidName] = useState<any>(true);
+    const [validYear, setValidYear] = useState<any>(true);
+    const [validRunningTime, setValidRunningTime] = useState<any>(true);
+    const [validBannerLink, setValidBannerLink] = useState<any>(true);
+    const [validAbout, setValidAbout] = useState<any>(true);
+    const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+
+    const handleNameValidation = (e: any) => {
+        const reg = new RegExp("^[^\\s]+(\\s+[^\\s]+)*$");
+        setValidName(reg.test(e.target.value));
+        selectedMovie.name = e.target.value;
+    };
+
+    const handleYearValidation = (e: any) => {
+        if (e.target.value.length !== 0) {
+            if (e.target.value.length <= 4) {
+                selectedMovie.year = e.target.value;
+            } else {
+                e.target.value = selectedMovie.year;
+            }
+            setValidYear(true);
+            if (e.target.value[0] == 0) {
+                setValidYear(false);
+            }
+        } else {
+            setValidYear(false);
+        }
+    }
+
+    const handleRunningTimeValidation = (e: any) => {
+        if (e.target.value.length !== 0) {
+            if (e.target.value.length <= 3) {
+                selectedMovie.runningTime = e.target.value;
+            } else {
+                e.target.value = selectedMovie.runningTime;
+            }
+            setValidRunningTime(true);
+            if (e.target.value[0] == 0) {
+                setValidRunningTime(false);
+            }
+        } else {
+            setValidRunningTime(false);
+        }
+    }
+
+    const handleBannerLinkValidation = (e: any) => {
+        const reg = new RegExp("^[^\\s]+(\\s+[^\\s]+)*$");
+        setValidBannerLink(reg.test(e.target.value));
+        selectedMovie.bannerLink = e.target.value;
+    };
+
+    const handleAboutValidation = (e: any) => {
+        const reg = new RegExp("^[^\\s]+(\\s+[^\\s]+)*$");
+        setValidAbout(reg.test(e.target.value));
+        selectedMovie.about = e.target.value;
+    };
 
     const handleClose = () => {
         setShowUpdateMovieDialog(false);
@@ -90,6 +147,10 @@ export const UpdateMovieDialog: FC = () => {
         }
     }
 
+    function isDisabledChecker() {
+        return !validName || !validYear || !validRunningTime || !validBannerLink || !validAbout;
+    }
+
     return (
         <>
             <Modal show={showUpdateMovieDialog} onHide={handleClose} dialogClassName="modal-50w" backdrop="static"
@@ -101,75 +162,83 @@ export const UpdateMovieDialog: FC = () => {
                     <Modal.Body>
                         <div className="row justify-content-center mb-4">
                             <Stack spacing={3}>
-                                <TextField InputLabelProps={{required: false}}
-                                           required
-                                           id="name-input"
-                                           label="Name"
-                                           variant="outlined"
-                                           type="text"
-                                           defaultValue={selectedMovie.name}
-                                           onChange={(event) => {
-                                               selectedMovie.name = (event.target.value);
-                                           }}
+                                <TextField
+                                    InputLabelProps={{required: false}}
+                                    required
+                                    error={!validName}
+                                    helperText={!validName ? "String is empty or whitespaces detected at the beginning/end of the text" : ''}
+                                    id="name-input"
+                                    label="Name"
+                                    variant="outlined"
+                                    type="text"
+                                    defaultValue={selectedMovie.name}
+                                    onChange={(e) => handleNameValidation(e)}
                                 />
                             </Stack>
                         </div>
                         <div className="row justify-content-center mb-4">
                             <Stack spacing={3}>
-                                <TextField InputLabelProps={{required: false}}
-                                           required
-                                           id="year-input"
-                                           label="Year"
-                                           variant="outlined"
-                                           type="number"
-                                           defaultValue={selectedMovie.year}
-                                           onChange={(event) => {
-                                               selectedMovie.year = (event.target.value);
-                                           }}
+                                <TextField
+                                    InputLabelProps={{required: false}}
+                                    required
+                                    error={!validYear}
+                                    helperText={!validYear ? "Year is empty or begins with number 0" : ''}
+                                    id="year-input"
+                                    label="Year"
+                                    variant="outlined"
+                                    type="number"
+                                    defaultValue={selectedMovie.year}
+                                    onChange={(e) => handleYearValidation(e)}
+                                    onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
                                 />
                             </Stack>
                         </div>
                         <div className="row justify-content-center mb-4">
                             <Stack spacing={3}>
-                                <TextField InputLabelProps={{required: false}}
-                                           required
-                                           id="running-time-input"
-                                           label="Running Time"
-                                           variant="outlined"
-                                           type="number"
-                                           defaultValue={selectedMovie.runningTime}
-                                           onChange={(event) => {
-                                               selectedMovie.runningTime = (event.target.value);
-                                           }}
+                                <TextField
+                                    InputLabelProps={{required: false}}
+                                    required
+                                    error={!validRunningTime}
+                                    helperText={!validRunningTime ? "Running time is empty or begins with number 0" : ''}
+                                    id="running-time-input"
+                                    label="Running Time"
+                                    variant="outlined"
+                                    type="number"
+                                    defaultValue={selectedMovie.runningTime}
+                                    onChange={(e) => handleRunningTimeValidation(e)}
+                                    onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()}
                                 />
                             </Stack>
                         </div>
                         <div className="row justify-content-center mb-4">
                             <Stack spacing={3}>
-                                <TextField InputLabelProps={{required: false}}
-                                           required
-                                           id="banner-link-input"
-                                           label="Banner Link"
-                                           variant="outlined"
-                                           type="string"
-                                           defaultValue={selectedMovie.bannerLink}
-                                           onChange={(event) => {
-                                               selectedMovie.bannerLink = (event.target.value);
-                                           }}
+                                <TextField
+                                    InputLabelProps={{required: false}}
+                                    required
+                                    error={!validBannerLink}
+                                    helperText={!validBannerLink ? "String is empty or whitespaces detected at the beginning/end of the text" : ''}
+                                    id="banner-link-input"
+                                    label="Banner Link"
+                                    variant="outlined"
+                                    type="string"
+                                    defaultValue={selectedMovie.bannerLink}
+                                    onChange={(e) => handleBannerLinkValidation(e)}
                                 />
                             </Stack>
                         </div>
                         <div className="row justify-content-center">
                             <Stack spacing={3}>
-                                <TextField InputLabelProps={{required: false}}
-                                           required
-                                           id="about-input"
-                                           label="About"
-                                           multiline
-                                           defaultValue={selectedMovie.about}
-                                           onChange={(event) => {
-                                               selectedMovie.about = (event.target.value);
-                                           }}
+                                <TextField
+                                    InputLabelProps={{required: false}}
+                                    required
+                                    error={!validAbout}
+                                    helperText={!validAbout ? "String is empty or whitespaces detected at the beginning/end of the text" : ''}
+                                    id="about-input"
+                                    label="About"
+                                    type="string"
+                                    multiline
+                                    defaultValue={selectedMovie.about}
+                                    onChange={(e) => handleAboutValidation(e)}
                                 />
                             </Stack>
                         </div>
@@ -203,7 +272,7 @@ export const UpdateMovieDialog: FC = () => {
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button type="submit" variant="primary">
+                        <Button type="submit" variant="primary" disabled={isDisabledChecker()}>
                             Save Changes
                         </Button>
                     </Modal.Footer>
