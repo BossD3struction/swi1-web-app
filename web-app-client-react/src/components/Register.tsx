@@ -140,7 +140,8 @@ export const Register: FC = () => {
             </div>
             <div className="row justify-content-center">
                 <FormControl sx={{m: 1, width: '45ch'}} variant="outlined">
-                    <Button type="submit" variant="contained" size="large" color="success" disabled={isDisabledChecker()}>
+                    <Button type="submit" variant="contained" size="large" color="success"
+                            disabled={isDisabledChecker()}>
                         Register
                     </Button>
                 </FormControl>

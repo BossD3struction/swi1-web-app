@@ -15,7 +15,8 @@
 
       <div class="form-group">
         <label for="text">Review: </label>
-        <textarea class="form-control" name="text" id="text" rows="14" cols="100" required pattern="^[^\s]+(\s+[^\s]+)*$"
+        <textarea class="form-control" name="text" id="text" rows="14" cols="100" required
+                  pattern="^[^\s]+(\s+[^\s]+)*$"
                   [(ngModel)]="form.text" #text="ngModel">
         </textarea>
       </div>

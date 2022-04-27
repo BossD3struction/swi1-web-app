@@ -165,17 +165,6 @@ export const CreateMovieDialog: FC = () => {
                                             }}
                                             renderInput={(params) => <TextField {...params} helperText={null}/>}
                                         />
-                                       {/* <StaticDatePicker
-                                            views={['year']}
-                                            displayStaticWrapperAs="desktop"
-                                            openTo="year"
-                                            value={datePickerYearValue}
-                                            onChange={(newValue) => {
-                                                setDatePickerYearValue(newValue);
-                                                setYear(newValue.getFullYear());
-                                            }}
-                                            renderInput={(params) => <TextField {...params} />}
-                                        />*/}
                                     </LocalizationProvider>
 
                                 </Stack>
