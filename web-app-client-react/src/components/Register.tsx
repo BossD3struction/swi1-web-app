@@ -96,7 +96,7 @@ export const Register: FC = () => {
                 <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
                     <TextField InputLabelProps={{required: false}}
                                required
-                               error={username.length < 3 && username.length !== 0 || !validUsername && username.length !== 0}
+                               error={(username.length < 3 && username.length !== 0) || (!validUsername && username.length !== 0)}
                                helperText={
                                    username.length < 3 && username.length !== 0 ? "Username must be at least 3 characters long." :
                                        !validUsername && username.length !== 0 ? "Whitespaces detected at the beginning/end of the text" : ''}
@@ -126,7 +126,7 @@ export const Register: FC = () => {
                 <FormControl sx={{m: 1, width: '65ch'}} variant="outlined">
                     <TextField InputLabelProps={{required: false}}
                                required
-                               error={password.length < 6 && password.length !== 0 || !validPassword && password.length !== 0}
+                               error={(password.length < 6 && password.length !== 0) || (!validPassword && password.length !== 0)}
                                helperText={
                                    password.length < 6 && password.length !== 0 ? "Password must be at least 6 characters long." :
                                        !validPassword && password.length !== 0 ? "Whitespaces detected at the beginning/end of the text" : ''}
