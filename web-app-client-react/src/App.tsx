@@ -16,6 +16,7 @@ import {Users} from "./components/Users";
 import {Genres} from "./components/Genres";
 import {MoviesManagement} from "./components/MoviesManagement";
 import {Profile} from "./components/Profile";
+import {MoviesWithReviews} from "./components/MoviesWithReviews";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home/>}/>
                             <Route path="/home" element={<Home/>}/>
+                            <Route path="/movies-with-reviews" element={<MoviesWithReviews/>}/>
                             <Route path="/models" element={<Models/>}/>
                             <Route path="/movies" element={<Movies/>}/>
                             <Route path="/reviews" element={<Reviews/>}/>

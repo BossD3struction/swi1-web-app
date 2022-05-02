@@ -28,6 +28,7 @@ export const NavigationBar: FC = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" className="text-center">
                 <Nav>
+                    <Link to={'/movies-with-reviews'} className="nav-link">Movies</Link>
                     {isUserLoggedIn !== null &&
                         <>
                             <Link to={'/models'} className="nav-link">Models</Link>
