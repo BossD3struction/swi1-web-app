@@ -6,6 +6,7 @@ import {CreateGenreDialogComponent} from "../../dialogs/create-genre-dialog/crea
 import {MatDialog} from '@angular/material/dialog';
 import Swal from "sweetalert2";
 import {UpdateGenreDialogComponent} from "../../dialogs/update-genre-dialog/update-genre-dialog.component";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-genres',
@@ -76,19 +77,31 @@ export class GenresComponent implements OnInit {
 
   public async deleteGenreRequest(result: any, id: number) {
     if (result.isConfirmed) {
-      await this.genreService.deleteGenre(id);
-      await Swal.fire({
-        titleText: 'Genre was successfully deleted',
-        icon: 'success',
-        confirmButtonText: 'Close'
-      });
-      this.genreService.listGenres().subscribe(
-        data => {
-          this.genres = data;
-        }, err => {
-          this.content = JSON.parse(err.error).message;
+      try {
+        await this.genreService.deleteGenre(id);
+        await Swal.fire({
+          titleText: 'Genre was successfully deleted',
+          icon: 'success',
+          confirmButtonText: 'Close'
+        });
+        this.genreService.listGenres().subscribe(
+          data => {
+            this.genres = data;
+          }, err => {
+            this.content = JSON.parse(err.error).message;
+          }
+        );
+      } catch (err) {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 500) {
+            await Swal.fire({
+              titleText: 'Can\'t delete genre that is assigned to a movie',
+              icon: 'error',
+              confirmButtonText: 'Close'
+            });
+          }
         }
-      );
+      }
     }
   }
 
