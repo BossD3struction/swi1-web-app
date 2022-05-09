@@ -46,7 +46,7 @@ export class UpdateGenreDialogComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Close'
         });
-        await this.closeDialog();
+        this.closeDialog();
 
       } catch (err) {
         if (err instanceof HttpErrorResponse) {
